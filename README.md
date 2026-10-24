@@ -1,5 +1,7 @@
 # BaraoTechExplode
 
+**[Versão compilada pronta para uso → pasta compilado](compilado/)** · Windows x64 · baixe o ZIP, extraia e abra `BaraoTechExplode.exe`.
+
 Este projeto é um **fork do [RESET EXPLODE](https://github.com/GustavoReset/ResetExplode)**. O código principal foi desenvolvido por **Gustavo da Reset (GustavoReset)**. O BaraoTechExplode, da [Barão Tech](https://baraotech.online/), aproveita a leitura de sensores, hardware e desempenho da base original para desenvolver diagnóstico e otimização para jogos, com prévia dos impactos, backup e restauração.
 
 O fork tem identidade e alterações próprias e não é uma versão oficial do projeto original. A licença [MIT](LICENSE) e o copyright original de Gustavo permanecem preservados. O crédito também aparece em **Sobre / Créditos** e nos relatórios HTML.
