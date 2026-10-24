@@ -16,6 +16,22 @@ A restauração devolve o estado anterior à sessão, inclusive ajustes permanen
 
 Para preservar configurações e backups desta cópia existente, o diretório de dados continua `%AppData%\ResetExplode` e o namespace técnico continua `ResetExplode`. O mutex de instância é compartilhado com a versão anterior: feche o aplicativo antigo antes de abrir o fork. O executável distribuído passa a ser `BaraoTechExplode.exe`.
 
+### Comparar sessões de desempenho (v0.18)
+
+Na Biblioteca, selecione o jogo e confira seu executável em **Desempenho**. Abra o jogo, prepare um trecho repetível e, em **Comparação de sessões**, descreva o trecho, resolução, preset e limite de FPS. Escolha **Antes** ou **Depois** e clique em **Medir jogo · 60 segundos**. Há dez segundos para voltar ao jogo antes da coleta. A medição pode acompanhar um jogo iniciado pelo aplicativo ou um jogo já aberto; o executável em primeiro plano precisa corresponder ao escolhido.
+
+Os rótulos Antes/Depois não alteram o Windows. Prepare cada configuração explicitamente e repita as mesmas condições térmicas. As sessões registram FPS médio, 1% low, tempo médio, P99, temperaturas médias/máximas e contagens de amostras, perfil solicitado/salvo, estados lidos dos ajustes do Windows, prioridade lida e preferências por executável. O contexto do hardware e driver é o detectado na abertura do aplicativo; reabra após trocar hardware ou drivers. Preferências do Registro não comprovam qual GPU foi usada nem que todo ajuste foi efetivamente aplicado.
+
+Escolha uma sessão de cada tipo para ver a comparação. Sessões parciais, com perda de primeiro plano, eventos inválidos, limite de captura atingido, menos de 300 intervalos ou eventos que não cobrem a janela (tolerância de dois segundos nas bordas) não recebem porcentagens. Jogos, cenários, executáveis ou contextos de hardware diferentes também bloqueiam os percentuais. Valores ausentes aparecem como desconhecidos. A comparação isolada não atribui causalidade à otimização.
+
+Os tempos vêm dos eventos Present por processo do ETW, sem injeção. FPS médio = intervalos/tempo total; 1% low = inverso da média do 1% de intervalos mais lentos; P99 usa o percentil de posto mais próximo. A definição de 1% low desta comparação difere da aproximação por P99 usada no overlay existente. Esses dados não são uma medição dos quadros efetivamente exibidos: menus, múltiplas swapchains e geração de quadros podem afetar os valores. Vulkan/OpenGL podem não fornecer eventos. Não se soma nem faz média de janelas sobrepostas do overlay.
+
+As últimas 100 sessões são persistidas em `game-performance.json` com gravação atômica e cópia anterior `.bak`. Arquivos inválidos são preservados e bloqueiam novas gravações até serem revisados. O botão de exportação salva o par escolhido e o contexto em JSON, incluindo caminhos locais. Os testes automatizados usam eventos e arquivos simulados; a precisão em um jogo real ainda depende do ETW e do suporte do título/driver.
+
+### Recuperação pendente na abertura
+
+Um aviso no topo de todas as páginas identifica diários pendentes de energia, captura e serviços temporários, com os estados originais disponíveis e botão de restauração. Arquivos corrompidos ou órfãos também são sinalizados e preservados. A abertura apenas consulta os registros; a restauração ocorre ao clicar no botão e fica bloqueada durante testes e medições. O aviso não aparece para uma sessão de jogo que está sendo acompanhada normalmente.
+
 ## Funcionalidades herdadas da base v0.16
 - **Inicialização** (RESET FERRAMENTAS): veja, desative ou remova os programas que abrem junto com o Windows, com opção de desfazer.
 - **Instalar apps** (RESET FERRAMENTAS): Steam, Chrome, Discord, Lightshot, 7-Zip, WinRAR e VLC de uma vez depois de formatar, pelo winget.

@@ -123,6 +123,8 @@ public partial class MainWindow
         SetChip(LPriorityPanel, p.Priority);
         LChkPlan.IsChecked = p.HighPerfPlan;
         LChkGameMode.IsChecked = p.GameMode;
+        LMeasureScenario.Text = p.MeasurementScenario;
+        LMeasureStage.SelectedValue = p.MeasurementStage;
         p.TemporaryServices ??= new();
         LTemporaryServices.ItemsSource = GamingServiceCatalog.Rules.Select(rule => new ServiceProfileRow
         {
@@ -148,6 +150,7 @@ public partial class MainWindow
                 : "Os argumentos são enviados direto ao .exe quando você clica em JOGAR.";
         LStatus.Text = "";
         _lLoading = false;
+        RefreshPerformanceHistory();
         UpdateLauncherPreview();
         await ShowExeAsync(g, p);
     }
@@ -176,6 +179,8 @@ public partial class MainWindow
         _lp.Priority = CheckedTag(LPriorityPanel) ?? "normal";
         _lp.HighPerfPlan = LChkPlan.IsChecked == true;
         _lp.GameMode = LChkGameMode.IsChecked == true;
+        _lp.MeasurementScenario = LMeasureScenario.Text.Trim();
+        _lp.MeasurementStage = LMeasureStage.SelectedValue as string == "Depois" ? "Depois" : "Antes";
         _lp.TemporaryServices = LTemporaryServices.Items.OfType<ServiceProfileRow>().Where(r => r.Selected).Select(r => r.Name).ToList();
         _lp.GpuHigh = LChkGpu.IsChecked == true;
         _lp.DisableFso = LChkFso.IsChecked == true;
@@ -296,10 +301,13 @@ public partial class MainWindow
             "SERVIÇOS TEMPORÁRIOS · " + g.Name,
             "Desabilitar e parar durante o acompanhamento. Os estados originais serão guardados separadamente e restaurados ao sair ou cancelar. Se houver falha, o registro permanece para recuperação em Otimização. Nenhum ganho de FPS medido.")) return;
         _launchCts = new CancellationTokenSource();
+        RefreshPendingRecovery();
         BtnPlay.Content = "PARAR ACOMPANHAMENTO";
         try
         {
             var effectiveProfile = GamingOptimization.EffectiveProfile(p, _settings.UniversalGameMode);
+            _activeGameKey = g.Key;
+            _activeGameProfile = effectiveProfile;
             _launchTask = GameLauncher.RunAsync(g, effectiveProfile,
                 t => Dispatcher.BeginInvoke(new Action(() => LStatus.Text = t)),
                 exe => Dispatcher.BeginInvoke(new Action(() =>
@@ -318,9 +326,11 @@ public partial class MainWindow
         {
             _launchCts?.Dispose();
             _launchCts = null;
+            _activeGameKey = null; _activeGameProfile = null;
             BtnPlay.Content = "JOGAR";
             RefreshOptimizationState();
             RefreshTemporaryHistory();
+            RefreshPendingRecovery();
         }
     }
 }

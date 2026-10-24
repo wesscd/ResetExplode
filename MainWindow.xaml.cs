@@ -97,6 +97,7 @@ public partial class MainWindow : Window
         RefreshDrives();
         TitlePage.Text = "Visão geral";
         UpdateDashboard();
+        RefreshPendingRecovery();
 
         // A janela aparece já; as coletas pesadas (WMI, sensores, GPU) rodam em paralelo fora da thread da janela.
         Loaded += async (_, _) => await LoadHardwareAsync();
@@ -130,7 +131,7 @@ public partial class MainWindow : Window
         {
             if (_closingAfterCleanup) return;
             if (_closeCleanupRunning) { e.Cancel = true; return; }
-            var pending = new[] { _launchTask, _ocTask, _serviceTask, _liveAuditTask }.Where(t => t != null && !t.IsCompleted).Cast<Task>().ToArray();
+            var pending = new[] { _launchTask, _ocTask, _serviceTask, _liveAuditTask, _measurementTask }.Where(t => t != null && !t.IsCompleted).Cast<Task>().ToArray();
             if (pending.Length == 0) return;
             e.Cancel = true;
             _closeCleanupRunning = true;
@@ -138,6 +139,7 @@ public partial class MainWindow : Window
             _ocCts?.Cancel();
             _serviceCts?.Cancel();
             _liveAuditCts?.Cancel();
+            _measurementCts?.Cancel();
             try { await Task.WhenAll(pending); }
             catch { /* as atividades executam a restauração em finally */ }
             _closingAfterCleanup = true;
@@ -1074,7 +1076,7 @@ public partial class MainWindow : Window
     private int[] _simPixels = Array.Empty<int>();
     private const int SimView = 440;
 
-    private bool AnyBenchRunning => BenchRunning || _gameBenchRunning || _ocRunning || _rtChecking || _optimizationBusy || _netRunning || _launchCts != null;
+    private bool AnyBenchRunning => BenchRunning || _gameBenchRunning || _ocRunning || _rtChecking || _optimizationBusy || _netRunning || _launchCts != null || _measurementCts != null;
 
     private void BenchTest_Checked(object sender, RoutedEventArgs e)
     {

@@ -12,6 +12,13 @@ Servicos temporarios: selecione no perfil do jogo na Biblioteca.
 Ao terminar o acompanhamento, os originais sao restaurados. Apos falha
 ou interrupcao forcada, use RESTAURAR SESSAO PENDENTE em Otimizacao.
 Historico disponivel no painel de servicos. Confira os impactos antes de aplicar.
+
+v0.18: aviso de restauracao pendente no topo de todas as paginas.
+Comparacao por jogo: confira o .exe na Biblioteca, descreva um trecho repetivel,
+selecione Antes ou Depois e clique MEDIR JOGO. Volte ao jogo em 10 segundos;
+a coleta dura 60 segundos. Os rotulos nao alteram ajustes automaticamente.
+Sessoes incompletas ou contextos diferentes nao geram porcentagens de melhora.
+Dados de Present/ETW nao equivalem a quadros exibidos nem comprovam ganho causal.
 =============
 
 Ferramenta de diagnóstico de hardware: informações do sistema, sensores, placa de vídeo,

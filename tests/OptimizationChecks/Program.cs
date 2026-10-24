@@ -198,6 +198,7 @@ try
     ServiceProfileChecks.Run(folder, Check, Throws);
     LiveAuditChecks.Run(Check);
     TemporarySessionChecks.Run(folder, Check, Throws);
+    PerformanceChecks.Run(folder, Check, Throws);
     Console.WriteLine($"{checks} verificações aprovadas.");
 }
 finally

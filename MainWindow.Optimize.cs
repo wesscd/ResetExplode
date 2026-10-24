@@ -92,7 +92,7 @@ public partial class MainWindow
 
     private async void BtnRecoverGameMode_Click(object sender, RoutedEventArgs e)
     {
-        if (AnyBenchRunning || TestRunning || _netRunning) { OptTweakResult.Text = "Termine a atividade em andamento antes de restaurar a sessão."; return; }
+        if (AnyBenchRunning || TestRunning || _netRunning) { OptTweakResult.Text = "Termine a atividade em andamento antes de restaurar a sessão."; RecoveryBannerDetails.Text += "\n" + OptTweakResult.Text; return; }
         _serviceTask = RecoverTemporarySessionAsync();
         await _serviceTask;
     }
@@ -101,6 +101,7 @@ public partial class MainWindow
     {
         _optimizationBusy = true;
         BtnRecoverGameMode.IsEnabled = false;
+        BtnBannerRecover.IsEnabled = false;
         try
         {
             var errors = await Task.Run(() => GameModeSession.Recover().Concat(TemporaryServiceSession.Recover()).ToList());
@@ -111,5 +112,7 @@ public partial class MainWindow
         RefreshOptimizationState();
         UpdateOptimizationDiagnosis();
         RefreshTemporaryHistory();
+        RefreshPendingRecovery();
+        if (RecoveryBanner.Visibility == Visibility.Visible) RecoveryBannerDetails.Text += "\n" + OptTweakResult.Text;
     }
 }

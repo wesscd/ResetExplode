@@ -26,6 +26,8 @@ public sealed class GameProfile
     public bool HighPerfPlan { get; set; }
     public bool GameMode { get; set; }
     public List<string> TemporaryServices { get; set; } = new();
+    public string MeasurementScenario { get; set; } = "";
+    public string MeasurementStage { get; set; } = "Antes";
     public bool GpuHigh { get; set; }
     public bool DisableFso { get; set; }
     public string? ExePath { get; set; }

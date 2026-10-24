@@ -54,6 +54,16 @@
 - Aparece no monitor onde o jogo está, não só no monitor principal.
 # BaraoTechExplode · fork da Barão Tech
 
+## v0.18 · Comparação de sessões e recuperação visível
+
+- Aviso global ao abrir o aplicativo com ajustes temporários pendentes, funções afetadas, estados originais e botão de restauração.
+- Medição por jogo em janelas de 60 segundos, com contagem regressiva de dez segundos, rótulos Antes/Depois e descrição do cenário.
+- Comparação de FPS, 1% low, tempos médio/P99 e temperaturas; sessões incompletas ou contextos diferentes não geram percentuais de melhora.
+- Registro do perfil, estados lidos do Windows e processo, histórico atômico e exportação JSON da comparação.
+- Métricas calculadas a partir dos intervalos individuais de Present do ETW; limitações explicitadas no aplicativo e na documentação.
+
+## v0.17 · Identidade e otimização revisável
+
 O código principal é de Gustavo da Reset (GustavoReset), autor do RESET EXPLODE. Este fork aproveita sensores e ferramentas de desempenho da base original para desenvolver diagnóstico e otimização para jogos. Licença MIT e copyright original preservados. Projeto original: https://github.com/GustavoReset/ResetExplode · Barão Tech: https://baraotech.online/
 
 - Nova identidade BaraoTechExplode com logotipo do site da Barão Tech, ícone do Windows e painel Sobre / Créditos.

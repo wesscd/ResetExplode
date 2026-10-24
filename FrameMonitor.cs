@@ -26,6 +26,30 @@ public sealed class FrameMonitor : IDisposable
     private readonly object _lock = new();
     private readonly Dictionary<int, Queue<double>> _presents = new(); // pid → timestamps (ms, relógio do ETW)
     private readonly Dictionary<int, long> _lastSeen = new();           // pid → Stopwatch do último evento recebido
+    private FrameCapture? _capture;
+    private int _capturePid;
+
+    public FrameCapture BeginCapture(int pid)
+    {
+        lock (_lock)
+        {
+            if (_capture != null) throw new InvalidOperationException("Já existe uma medição de quadros ativa.");
+            _capturePid = pid;
+            return _capture = new FrameCapture();
+        }
+    }
+    public CapturedFrames EndCapture(FrameCapture capture)
+    {
+        lock (_lock) { if (ReferenceEquals(_capture, capture)) _capture = null; }
+        return capture.Finish();
+    }
+
+    public int ForegroundProcessId()
+    {
+        var window = GetForegroundWindow();
+        GetWindowThreadProcessId(window, out uint pid);
+        return (int)pid;
+    }
 
     public bool Running => _thread?.IsAlive == true;
     public string? Error { get; private set; }
@@ -66,6 +90,7 @@ public sealed class FrameMonitor : IDisposable
         double t = e.TimeStampRelativeMSec;
         lock (_lock)
         {
+            if (_capture != null && e.ProcessID == _capturePid) _capture.AddPresent(t);
             if (!_presents.TryGetValue(e.ProcessID, out var q)) _presents[e.ProcessID] = q = new Queue<double>();
             q.Enqueue(t);
             while (q.Count > 0 && q.Peek() < t - HistoryMs) q.Dequeue();
