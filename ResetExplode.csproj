@@ -7,20 +7,26 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
-    <AssemblyName>ResetExplode</AssemblyName>
-    <Product>RESET EXPLODE</Product>
-    <Version>0.16.0</Version>
+    <ApplicationIcon>Assets\baraotech.ico</ApplicationIcon>
+    <AssemblyName>BaraoTechExplode</AssemblyName>
+    <RootNamespace>ResetExplode</RootNamespace>
+    <Product>BaraoTechExplode</Product>
+    <Description>Fork do RESET EXPLODE de Gustavo (GustavoReset), com sensores, desempenho e otimização para jogos pela Barão Tech.</Description>
+    <Company>Barão Tech</Company>
+    <Version>0.17.0</Version>
     <!-- Sempre otimizado: o RESET BENCH e os stress tests precisam do JIT otimizado também em Debug -->
     <Optimize>true</Optimize>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="tests\**\*.cs" />
     <Resource Include="Assets\logo.png" />
     <Resource Include="Assets\app.ico" />
     <Resource Include="Assets\logo-badge.png" />
     <Resource Include="Assets\logo-dark.png" />
+    <Resource Include="Assets\baraotech.png" />
+    <Resource Include="Assets\baraotech.ico" />
   </ItemGroup>
 
   <!-- Drivers seriais oficiais embutidos (RESET MAKER): cada pasta Drivers\<chip> vira recurso e é extraída na hora de instalar.

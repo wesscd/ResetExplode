@@ -176,6 +176,18 @@ public static class Optimizer
 
     private static long AvailableBytes() => MemoryStatus().Available;
 
+    public static bool? OnBattery => GetSystemPowerStatus(out var status)
+        ? status.ACLineStatus switch { 0 => true, 1 => false, _ => null } : null;
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct SYSTEM_POWER_STATUS
+    {
+        public byte ACLineStatus, BatteryFlag, BatteryLifePercent, SystemStatusFlag;
+        public uint BatteryLifeTime, BatteryFullLifeTime;
+    }
+
+    [DllImport("kernel32.dll")] private static extern bool GetSystemPowerStatus(out SYSTEM_POWER_STATUS status);
+
     private static void EnablePrivilege(string name)
     {
         if (!OpenProcessToken(Process.GetCurrentProcess().Handle, 0x0020 | 0x0008, out var token)) // ADJUST | QUERY

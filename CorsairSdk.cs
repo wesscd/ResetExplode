@@ -91,7 +91,7 @@ public sealed unsafe class CorsairSdk : IDisposable
                 if (File.Exists(p) && NativeLibrary.TryLoad(p, out _lib)) { LoadedFrom = p; goto loaded; }
             }
         if (NativeLibrary.TryLoad(DllFile, out _lib)) { LoadedFrom = DllFile; goto loaded; }
-        return $"Não encontrei o {DllFile}. Use o botão BAIXAR O SDK DA CORSAIR (ou copie a DLL para a pasta do ResetExplode.exe ou para {AppSettings.Folder}).";
+        return $"Não encontrei o {DllFile}. Use o botão BAIXAR O SDK DA CORSAIR (ou copie a DLL para a pasta do BaraoTechExplode.exe ou para {AppSettings.Folder}).";
 
     loaded:
         try

@@ -1,0 +1,766 @@
+VALIDAÇÃO DO ARQUIVO DE REFERÊNCIA — PERFIL DE SERVIÇOS PARA JOGOS
+Entradas: 254. A lista é material de referência; não é medição de consumo nem inventário confirmado deste PC.
+Estados do anexo não são importados/aplicados. Segurança e funções essenciais são preservadas.
+Manual/parado não significa consumo contínuo. Ganhos de FPS não foram medidos.
+
+AxInstSV | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+AGMService | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+AGSService | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+AarSvc_b531c | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+AJRouter | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Manual / Stopped
+  Pode interromper comunicação de dispositivos/aplicativos AllJoyn.
+
+AppReadiness | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+Appinfo | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+ALG | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+AppMgmt | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+AppXSvc | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+tzautoupdate | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Disabled / Stopped
+  Fuso horário deixa de acompanhar mudanças de localização; sincronização de relógio W32Time é preservada.
+
+BthAvctpSvc | PRESERVAR FUNCIONALIDADE | anexo: Manual / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+BITS | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+BrokerInfrastructure | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+BFE | PRESERVAR SEGURANÇA | anexo: Automatic / Started
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+BDESVC | PRESERVAR SEGURANÇA | anexo: Manual / Stopped
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+wbengine | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+BTAGService | PRESERVAR FUNCIONALIDADE | anexo: Manual / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+bthserv | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+BluetoothUserService_b531c | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+camsvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+CaptureService_b531c | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+autotimesvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+ClipSVC | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+cbdhsvc_b531c | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+KeyIso | PRESERVAR SEGURANÇA | anexo: Manual / Started
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+EventSystem | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+COMSysApp | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+CmdAgent | PRESERVAR SEGURANÇA | anexo: Automatic / Started
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+CmdAgentProt | PRESERVAR SEGURANÇA | anexo: Automatic / Stopped
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+cmdvirth | PRESERVAR SEGURANÇA | anexo: Manual / Stopped
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+Browser | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+CDPSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+CDPUserSvc_b531c | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+ConsentUxUserSvc_b531c | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+CmService | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+CoreMessagingRegistrar | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+VaultSvc | PRESERVAR SEGURANÇA | anexo: Manual / Stopped
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+CredentialEnrollmentManagerUserSvc_b531c | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+CryptSvc | PRESERVAR SEGURANÇA | anexo: Automatic / Started
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+DsSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+DusmSvc | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+DcomLaunch | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+DoSvc | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+DeviceAssociationService | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+DeviceInstall | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+DmEnrollmentSvc | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+dmwappushservice | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+DsmSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+DeviceAssociationBrokerSvc_b531c | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+DevicePickerUserSvc_b531c | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+DevicesFlowUserSvc_b531c | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+DevQueryBroker | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+Dhcp | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+diagsvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+DPS | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+WdiServiceHost | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+WdiSystemHost | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+DialogBlockingService | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+DisplayEnhancementService | PRESERVAR FUNCIONALIDADE | anexo: Manual / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+DispBrokerDesktopSvc | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+TrkWks | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Automatic / Started
+  Atalhos e links para arquivos movidos podem deixar de ser acompanhados; não é um acelerador de rede.
+
+MSDTC | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+Dnscache | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+embeddedmode | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+EFS | PRESERVAR SEGURANÇA | anexo: Manual / Started
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+EntAppSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+Eaphost | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+Fax | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Manual / Stopped
+  Envio e recebimento de fax ficam indisponíveis.
+
+fhsvc | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+FileSyncHelper | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+fdPHost | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+FDResPub | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+GameInputSvc | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+lfsvc | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Disabled / Stopped
+  Aplicativos e recursos dependentes de localização deixam de funcionar corretamente.
+
+GsServer | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+GraphicsPerfSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+gpsvc | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+HgClientService | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+hns | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+hidserv | PRESERVAR FUNCIONALIDADE | anexo: Manual / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+HvHost | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+vmickvpexchange | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+gcs | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+vmicguestinterface | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+vmicshutdown | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+vmicheartbeat | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+vmcompute | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+vmicvmsession | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+vmicrdv | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+vmictimesync | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+vmms | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+vmicvss | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+IKEEXT | PRESERVAR SEGURANÇA | anexo: Automatic / Started
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+Intel(R) Capability Licensing Service TCP IP Interface | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+cplspcon | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+cphs | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+jhi_service | PRESERVAR SEGURANÇA | anexo: Disabled / Stopped
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+igfxCUIService2.0.0.0 | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+LMS | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+RstMwService | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+Intel(R) TPM Provisioning Service | PRESERVAR SEGURANÇA | anexo: Disabled / Stopped
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+SharedAccess | PRESERVAR FUNCIONALIDADE | anexo: Manual / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+iphlpsvc | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+IpxlatCfgSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+PolicyAgent | PRESERVAR SEGURANÇA | anexo: Manual / Started
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+Jackett | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+KtmRm | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+LxpSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+lltdsvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+wlpasvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+LSM | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+McpManagementService | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+MessagingService_b531c | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+diagnosticshub.standardcollector.service | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+wlidsvc | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+cloudidsvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+MicrosoftEdgeElevationService | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+edgeupdate | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+edgeupdatem | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+MSiSCSI | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+MsKeyboardFilter | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+ClickToRunSvc | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+NgcSvc | PRESERVAR SEGURANÇA | anexo: Manual / Stopped
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+NgcCtnrSvc | PRESERVAR SEGURANÇA | anexo: Manual / Stopped
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+swprv | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+smphost | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+InstallService | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+SmsRouter | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+NahimicService | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+NaturalAuthentication | PRESERVAR SEGURANÇA | anexo: Manual / Stopped
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+NetTcpPortSharing | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Disabled / Stopped
+  Aplicativos WCF/.NET que compartilham portas podem falhar.
+
+Netlogon | PRESERVAR SEGURANÇA | anexo: Manual / Stopped
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+NcbService | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+Netman | PRESERVAR FUNCIONALIDADE | anexo: Manual / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+NcaSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+netprofm | PRESERVAR FUNCIONALIDADE | anexo: Manual / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+NlaSvc | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+NetSetupSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+nsi | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+nvagent | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+NVDisplay.ContainerLocalSystem | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+CscService | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+OneDrive Updater Service | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+defragsvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+SEMgrSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+PNRPsvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+p2psvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+p2pimsvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+PerfHost | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+pla | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+PhoneSvc | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Disabled / Stopped
+  Pode afetar funções de telefonia e integração com celular.
+
+PlugPlay | PRESERVAR FUNCIONALIDADE | anexo: Manual / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+PNRPAutoReg | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+WPDBusEnum | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+Power | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+Spooler | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Automatic / Started
+  Desliga impressão física e virtual, incluindo Microsoft Print to PDF. Não use se precisa imprimir.
+
+PrintNotify | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Manual / Stopped
+  Extensões e notificações de impressoras podem parar.
+
+PrintWorkflowUserSvc_b531c | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+wercplsupport | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+PcaSvc | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+ProtonVPN Service | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+ProtonVPN WireGuard | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+PSEXESVC | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+QWAVE | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+RmSvc | PRESERVAR FUNCIONALIDADE | anexo: Manual / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+RtkAudioUniversalService | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+TroubleshootingSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+RasAuto | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+RasMan | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+SessionEnv | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+TermService | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+UmRdpService | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+RpcSs | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+RpcLocator | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+RemoteAccess | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+RpcEptMapper | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+seclogon | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+SstpSvc | PRESERVAR FUNCIONALIDADE | anexo: Manual / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+SamSs | PRESERVAR SEGURANÇA | anexo: Manual / Started
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+SensorDataService | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+SensrSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+SensorService | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+LanmanServer | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+ShellHWDetection | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+SNMPTRAP | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Manual / Stopped
+  Ferramentas de monitoramento que recebem traps SNMP deixam de funcionar.
+
+sppsvc | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+svsvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+SSDPSRV | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Disabled / Stopped
+  Descoberta UPnP de dispositivos de rede pode falhar.
+
+StateRepository | PRESERVAR FUNCIONALIDADE | anexo: Manual / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+WiaRpc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+StorSvc | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+TieringEngineService | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+SysMain | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+SENS | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+SystemEventsBroker | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+SgrmBroker | PRESERVAR SEGURANÇA | anexo: Automatic / Started
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+Schedule | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+lmhosts | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+TapiSrv | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+TeraCopyService.exe | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+Themes | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+TimeBrokerSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+TabletInputService | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+TunnelBearMaintenance | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+UdkUserSvc_b531c | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+UnistoreSvc_b531c | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+UsoSvc | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+upnphost | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Automatic / Stopped
+  Hospedagem UPnP e recursos de dispositivos de rede podem falhar.
+
+UevAgentService | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+UserManager | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+ProfSvc | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+vds | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+VSS | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+WTabletServicePro | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+TokenBroker | PRESERVAR FUNCIONALIDADE | anexo: Manual / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+WebClient | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+WFDSConMgrSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+Audiosrv | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+AudioEndpointBuilder | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+SDRSVC | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+WbioSrvc | PRESERVAR SEGURANÇA | anexo: Manual / Stopped
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+FrameServer | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Manual / Stopped
+  Pode interromper webcam, videochamadas e captura de câmera em streams.
+
+wcncsvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+Wcmsvc | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+mpssvc | PRESERVAR SEGURANÇA | anexo: Automatic / Started
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+WEPHOSTSVC | PRESERVAR SEGURANÇA | anexo: Manual / Stopped
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+WerSvc | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Manual / Stopped
+  Pode perder relatórios de falhas e dados úteis para investigar crashes. Log de Eventos é preservado.
+
+Wecsvc | PRESERVAR SEGURANÇA | anexo: Disabled / Stopped
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+EventLog | PRESERVAR SEGURANÇA | anexo: Automatic / Started
+  Segurança, autenticação, criptografia, firewall ou auditoria. Fora do perfil.
+
+FontCache | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+stisvc | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+msiserver | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+LicenseManager | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+Winmgmt | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+WManSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+icssvc | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+TrustedInstaller | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+FontCache3.0.0.0 | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+WpnService | PRESERVAR / NÃO VALIDADO | anexo: Disabled / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+WpnUserService_b531c | PRESERVAR / NÃO VALIDADO | anexo: Manual / Started
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+WSearch | CONDICIONAL, NÃO PRÉ-MARCADO | anexo: Automatic / Started
+  Busca de arquivos/e-mail perde indexação e pode ficar mais lenta. Use somente para investigar consumo de disco medido.
+
+WslInstaller | PRESERVAR / NÃO VALIDADO | anexo: Automatic / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+W32Time | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+wuauserv | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+WaaSMedicSvc | PRESERVAR FUNCIONALIDADE | anexo: Manual / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+WindscribeService | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+WinHttpAutoProxySvc | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+dot3svc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+WlanSvc | PRESERVAR FUNCIONALIDADE | anexo: Automatic / Started
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+wmiApSrv | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+LanmanWorkstation | PRESERVAR FUNCIONALIDADE | anexo: Disabled / Stopped
+  Preservado para jogos, drivers, rede, áudio, instalação, recuperação ou infraestrutura do Windows.
+
+WSLService | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.
+
+WwanSvc | PRESERVAR / NÃO VALIDADO | anexo: Manual / Stopped
+  Identidade/função não validada neste perfil. Inclui serviços de terceiros, anti-cheat e instâncias por usuário; não alterar automaticamente.

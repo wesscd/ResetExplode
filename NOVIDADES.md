@@ -52,3 +52,18 @@
 - O overlay agora fica por cima de jogos em janela sem borda que também se marcam como "sempre no topo"
   (ex.: GTA V e Cyberpunk 2077), inclusive depois de Alt+Tab.
 - Aparece no monitor onde o jogo está, não só no monitor principal.
+# BaraoTechExplode · fork da Barão Tech
+
+O código principal é de Gustavo da Reset (GustavoReset), autor do RESET EXPLODE. Este fork aproveita sensores e ferramentas de desempenho da base original para desenvolver diagnóstico e otimização para jogos. Licença MIT e copyright original preservados. Projeto original: https://github.com/GustavoReset/ResetExplode · Barão Tech: https://baraotech.online/
+
+- Nova identidade BaraoTechExplode com logotipo do site da Barão Tech, ícone do Windows e painel Sobre / Créditos.
+- Análise atual de serviços e aplicativos, amostra de CPU/RAM/E/S, classificação, impactos e prévia antes da aplicação.
+- Perfil de serviços com segurança preservada, validação de dependências, backup e restauração.
+- Serviços temporários selecionados por jogo na Biblioteca, restauração ao terminar o acompanhamento e recuperação de sessões interrompidas.
+- Histórico persistente das sessões de serviços, incluindo falhas e novas tentativas de restauração.
+- Ajustes globais revisáveis, sessão de energia e captura reversível, guias para GPUs AMD, NVIDIA e Intel.
+- Testes de persistência, falhas parciais, dependências, identidade de processos e restauração com backends simulados.
+
+O executável deste fork é `BaraoTechExplode.exe`. A pasta de dados `%AppData%\ResetExplode` é mantida para compatibilidade com os backups existentes. Feche a versão anterior antes de abrir esta. A análise não promete ganho de FPS; compare resultados no seu jogo e hardware.
+
+---

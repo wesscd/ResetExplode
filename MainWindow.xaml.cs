@@ -126,6 +126,23 @@ public partial class MainWindow : Window
             Root.Margin = max ? new Thickness(7) : new Thickness(0);
             BtnMax.Content = max ? "" : "";
         };
+        Closing += async (_, e) =>
+        {
+            if (_closingAfterCleanup) return;
+            if (_closeCleanupRunning) { e.Cancel = true; return; }
+            var pending = new[] { _launchTask, _ocTask, _serviceTask, _liveAuditTask }.Where(t => t != null && !t.IsCompleted).Cast<Task>().ToArray();
+            if (pending.Length == 0) return;
+            e.Cancel = true;
+            _closeCleanupRunning = true;
+            _launchCts?.Cancel();
+            _ocCts?.Cancel();
+            _serviceCts?.Cancel();
+            _liveAuditCts?.Cancel();
+            try { await Task.WhenAll(pending); }
+            catch { /* as atividades executam a restauração em finally */ }
+            _closingAfterCleanup = true;
+            Close();
+        };
         Closed += (_, _) =>
         {
             _timer.Stop(); _overlayTimer?.Stop();
@@ -213,7 +230,7 @@ public partial class MainWindow : Window
         string why = SensorMonitor.Explain(p);
         if (p != SensorMonitor.CpuSensorProblem.PawnIOMissing)
         {
-            MessageBox.Show(why, "RESET EXPLODE", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(why, "BaraoTechExplode", MessageBoxButton.OK, MessageBoxImage.Information);
             return;
         }
 
@@ -225,17 +242,17 @@ public partial class MainWindow : Window
             MessageBox.Show(why + "\n\nO instalador de pacotes do Windows (winget) não foi encontrado neste PC. " +
                             "Atualize o \"Instalador de Aplicativo\" pela Microsoft Store e use o botão de novo, " +
                             "ou instale o PawnIO (autor: namazso) manualmente.",
-                            "RESET EXPLODE", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            "BaraoTechExplode", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
         var r = MessageBox.Show(why + "\n\nInstalar o PawnIO agora? Vai abrir uma janela com o instalador do Windows (winget). " +
-                                "Quando terminar, feche o RESET EXPLODE e abra de novo.",
-                                "RESET EXPLODE", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                                "Quando terminar, feche o BaraoTechExplode e abra de novo.",
+                                "BaraoTechExplode", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (r != MessageBoxResult.Yes) return;
         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("cmd.exe",
             "/k winget install --id namazso.PawnIO -e --accept-package-agreements --accept-source-agreements" +
-            " && echo. && echo Pronto! Feche esta janela e reabra o RESET EXPLODE.")
+            " && echo. && echo Pronto! Feche esta janela e reabra o BaraoTechExplode.")
         { UseShellExecute = true });
     }
 
@@ -696,7 +713,7 @@ public partial class MainWindow : Window
     private async void BtnBench_Click(object sender, RoutedEventArgs e)
     {
         if (BenchRunning) { _benchCts!.Cancel(); return; }
-        if (TestRunning || _gameBenchRunning) { BenchHint.Text = "Pare o outro teste antes de rodar o benchmark."; return; }
+        if (TestRunning || AnyBenchRunning) { BenchHint.Text = "Termine a atividade em andamento antes do benchmark."; return; }
 
         string mode = CheckedTag(BenchModePanel) ?? "both";
         bool sustained = CheckedTag(BenchDurationPanel) == "10";
@@ -837,6 +854,9 @@ public partial class MainWindow : Window
         }
         RefreshApps();
         UpdateRamStatus();
+        RefreshOptimizationState();
+        UpdateOptimizationDiagnosis();
+        InitExtremeOptimization();
     }
 
     private void UpdateRamStatus()
@@ -858,11 +878,14 @@ public partial class MainWindow : Window
 
     private async void BtnOptimize_Click(object sender, RoutedEventArgs e)
     {
+        if (!CanChangeOptimization()) return;
         var toClose = _apps.Where(a => a.Selected).ToList();
+        bool clean = OptCleanMemory.IsChecked == true;
+        if (toClose.Count == 0 && !clean) { OptResult.Text = "Escolha programas para fechar ou marque a limpeza opcional."; return; }
         string list = toClose.Count == 0 ? "nenhum programa marcado"
                                          : string.Join("\n", toClose.Select(a => $"  • {a.Title}"));
         var r = MessageBox.Show("O RESET OTIMIZA vai:\n\n" +
-                                "1. Limpar a memória em espera e enxugar a RAM dos programas.\n" +
+                                (clean ? "1. Limpar a memória em espera e enxugar a RAM dos programas.\n" : "1. Preservar o cache de memória.\n") +
                                 $"2. Fechar os programas marcados:\n{list}\n\n" +
                                 "Salve o que estiver aberto nesses programas antes. Continuar?",
                                 "RESET OTIMIZA", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -871,29 +894,37 @@ public partial class MainWindow : Window
         BtnOptimize.IsEnabled = false;
         BtnOptimize.Content = "OTIMIZANDO…";
         OptResult.Text = "";
-        var closeResult = await Task.Run(() => Optimizer.CloseApps(toClose));
-        var mem = await Task.Run(Optimizer.CleanMemory); // depois de fechar, para contar a memória liberada por eles também
-        BtnOptimize.IsEnabled = true;
-        BtnOptimize.Content = "RESET OTIMIZA";
-
-        var parts = new List<string> { $"Memória liberada: {mem.FreedBytes / 1048576.0:N0} MB" };
-        parts.Add(mem.StandbyPurged ? "memória em espera limpa" : $"memória em espera não limpa ({mem.StandbyError})");
-        if (closeResult.Closed.Count > 0) parts.Add($"fechados: {string.Join(", ", closeResult.Closed)}");
-        if (closeResult.NotClosed.Count > 0)
-            parts.Add($"não fecharam (podem ter algo não salvo ou pedir confirmação): {string.Join(", ", closeResult.NotClosed)}");
-        OptResult.Text = string.Join(" · ", parts) + ".";
-        RefreshApps();
-        UpdateRamStatus();
+        _optimizationBusy = true;
+        try
+        {
+            var closeResult = await Task.Run(() => Optimizer.CloseApps(toClose));
+            var parts = new List<string>();
+            if (clean)
+            {
+                var mem = await Task.Run(Optimizer.CleanMemory);
+                parts.Add($"Variação de RAM disponível: +{mem.FreedBytes / 1048576.0:N0} MB");
+                parts.Add(mem.StandbyPurged ? "memória em espera limpa" : $"memória em espera não limpa ({mem.StandbyError})");
+            }
+            if (closeResult.Closed.Count > 0) parts.Add($"fechados: {string.Join(", ", closeResult.Closed)}");
+            if (closeResult.NotClosed.Count > 0)
+                parts.Add($"não fecharam (podem ter algo não salvo ou pedir confirmação): {string.Join(", ", closeResult.NotClosed)}");
+            OptResult.Text = string.Join(" · ", parts) + ".";
+            RefreshApps();
+            UpdateRamStatus();
+            UpdateOptimizationDiagnosis();
+        }
+        catch (Exception ex) { OptResult.Text = "Falhou: " + ex.Message; }
+        finally { _optimizationBusy = false; BtnOptimize.IsEnabled = true; BtnOptimize.Content = "APLICAR SELEÇÃO"; }
     }
 
     private void Tweak_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not CheckBox { Tag: Tweak t } box) return;
+        if (!CanChangeOptimization()) { box.IsChecked = t.IsOn; return; }
         bool turnOn = box.IsChecked == true;
         try
         {
-            t.Write(turnOn, _settings);
-            _settings.Save();
+            WindowsTweaks.Apply(t, turnOn, _settings);
             t.Refresh();
             t.Status = t.IsOn == turnOn
                 ? (turnOn ? "Aplicado." : "Desligado.") + (t.NeedsRestart ? " Reinicie o PC para valer." : "")
@@ -905,6 +936,7 @@ public partial class MainWindow : Window
             t.Status = $"Falhou: {ex.Message}";
         }
         box.IsChecked = t.IsOn; // o binding é só leitura: volta ao estado real
+        RefreshOptimizationState();
     }
 
     // ----- USB e portas COM -----
@@ -947,7 +979,7 @@ public partial class MainWindow : Window
     private bool RequireAdmin()
     {
         if (SensorMonitor.IsElevated) return true;
-        MessageBox.Show("Esta ação precisa do RESET EXPLODE aberto como administrador.", "RESET EXPLODE",
+        MessageBox.Show("Esta ação precisa do BaraoTechExplode aberto como administrador.", "BaraoTechExplode",
                         MessageBoxButton.OK, MessageBoxImage.Warning);
         return false;
     }
@@ -1014,18 +1046,20 @@ public partial class MainWindow : Window
 
     private void BtnRestoreTweaks_Click(object sender, RoutedEventArgs e)
     {
+        if (!CanChangeOptimization()) return;
         if (_settings.TweakBackup.Count == 0)
         {
-            MessageBox.Show("Nenhum ajuste foi alterado pelo RESET EXPLODE ainda.", "RESET OTIMIZA",
+            MessageBox.Show("Nenhum ajuste foi alterado pelo BaraoTechExplode ainda.", "RESET OTIMIZA",
                             MessageBoxButton.OK, MessageBoxImage.Information);
             return;
         }
-        var r = MessageBox.Show("Voltar todos os ajustes do Windows para como estavam antes do RESET EXPLODE alterá-los?",
+        var r = MessageBox.Show("Voltar todos os ajustes do Windows para como estavam antes do BaraoTechExplode alterá-los?",
                                 "RESET OTIMIZA", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (r != MessageBoxResult.Yes) return;
         bool restart = _tweaks.Any(t => t.NeedsRestart && _settings.TweakBackup.ContainsKey(t.Id));
-        WindowsTweaks.RestoreAll(_tweaks, _settings);
-        foreach (var t in _tweaks) { t.Refresh(); t.Status = "Restaurado."; }
+        var errors = WindowsTweaks.RestoreAll(_tweaks, _settings);
+        OptTweakResult.Text = errors.Count == 0 ? "Ajustes restaurados." : "Há restaurações pendentes: " + string.Join("; ", errors);
+        RefreshOptimizationState();
         if (restart) MessageBox.Show("Alguns ajustes só voltam ao original depois de reiniciar o PC.", "RESET OTIMIZA");
     }
 
@@ -1040,7 +1074,7 @@ public partial class MainWindow : Window
     private int[] _simPixels = Array.Empty<int>();
     private const int SimView = 440;
 
-    private bool AnyBenchRunning => BenchRunning || _gameBenchRunning;
+    private bool AnyBenchRunning => BenchRunning || _gameBenchRunning || _ocRunning || _rtChecking || _optimizationBusy || _netRunning || _launchCts != null;
 
     private void BenchTest_Checked(object sender, RoutedEventArgs e)
     {
@@ -1420,6 +1454,7 @@ public partial class MainWindow : Window
     private void StartStress()
     {
         StressHint.Text = "";
+        if (AnyBenchRunning || _netRunning) { StressHint.Text = "Termine o teste, otimização ou sessão de jogo antes."; return; }
         bool cpu = ChkCpu.IsChecked == true, ram = ChkRam.IsChecked == true, gpu = ChkGpu.IsChecked == true;
         if (!cpu && !ram && !gpu) { StressHint.Text = "Ative CPU, RAM ou GPU."; return; }
 
@@ -1445,17 +1480,17 @@ public partial class MainWindow : Window
             string why = SensorMonitor.IsPawnIOInstalled
                 ? ""
                 : "\n\nCausa provável: o driver PawnIO não está instalado. Instale com:\n" +
-                  "winget install namazso.PawnIO\ne reabra o RESET EXPLODE.";
+                  "winget install namazso.PawnIO\ne reabra o BaraoTechExplode.";
             var r = MessageBox.Show("Nenhum sensor de temperatura da CPU foi encontrado, então o corte automático " +
                                     "por temperatura da CPU NÃO funcionará. Continuar mesmo assim?" + why,
-                                    "RESET EXPLODE", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                                    "BaraoTechExplode", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (r != MessageBoxResult.Yes) return;
         }
         if (gpu && MainGpuTemp() == null)
         {
             var r = MessageBox.Show("Nenhum sensor de temperatura da GPU foi encontrado, então o corte automático " +
                                     "por temperatura da GPU NÃO funcionará. Continuar mesmo assim?",
-                                    "RESET EXPLODE", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                                    "BaraoTechExplode", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (r != MessageBoxResult.Yes) return;
         }
 

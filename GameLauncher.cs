@@ -11,8 +11,6 @@ namespace ResetExplode;
 /// </summary>
 public static class GameLauncher
 {
-    private const string HighPerformance = "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c";
-
     // ---------------- Argumentos de gráficos ----------------
 
     /// <summary>Monta a linha de argumentos do perfil (modo de janela, resolução, taxa e extras) no estilo da engine escolhida.</summary>
@@ -92,23 +90,6 @@ public static class GameLauncher
         else k.SetValue(exe, "~ " + string.Join(" ", tokens), RegistryValueKind.String);
     }
 
-    // ---------------- Plano de energia ----------------
-
-    private static string PowerCfg(string args)
-    {
-        var psi = new ProcessStartInfo("powercfg.exe", args) { RedirectStandardOutput = true, UseShellExecute = false, CreateNoWindow = true };
-        using var p = Process.Start(psi)!;
-        string o = p.StandardOutput.ReadToEnd();
-        p.WaitForExit(5000);
-        return o;
-    }
-
-    private static string? ActiveScheme()
-    {
-        var m = Regex.Match(PowerCfg("/getactivescheme"), @"[0-9a-fA-F]{8}(-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}");
-        return m.Success ? m.Value : null;
-    }
-
     // ---------------- Iniciar ----------------
 
     private static Process? FindGameProcess(string dir, string? exe)
@@ -136,22 +117,18 @@ public static class GameLauncher
     /// </summary>
     public static async Task RunAsync(LibGame g, GameProfile p, Action<string> status, Action<string> learnedExe, CancellationToken ct)
     {
-        string? oldPlan = null;
+        GameModeSession? session = null;
+        TemporaryServiceSession? serviceSession = null;
         var helpers = new List<(Process Proc, bool Close)>();
         try
         {
+            ct.ThrowIfCancellationRequested();
             status("Aplicando o perfil…");
-            if (p.HighPerfPlan)
-            {
-                oldPlan = ActiveScheme();
-                if (!string.Equals(oldPlan, HighPerformance, StringComparison.OrdinalIgnoreCase))
-                {
-                    if (!PowerCfg("/list").Contains(HighPerformance, StringComparison.OrdinalIgnoreCase))
-                        PowerCfg($"-duplicatescheme {HighPerformance} {HighPerformance}");
-                    PowerCfg($"/setactive {HighPerformance}");
-                }
-                else oldPlan = null; // já estava em Alto desempenho: nada a restaurar
-            }
+            if (p.HighPerfPlan || p.GameMode)
+                session = GameModeSession.Start(g.Name, power: true, pauseCapture: p.GameMode);
+            if (p.TemporaryServices.Count > 0)
+                serviceSession = await Task.Run(() => TemporaryServiceSession.Start(g.Name, p.TemporaryServices), ct);
+            ct.ThrowIfCancellationRequested();
 
             string? exe = p.ExePath ?? g.ExePath ?? FindMainExe(g.InstallDir, g.Name);
             if (exe != null && File.Exists(exe))
@@ -172,6 +149,7 @@ public static class GameLauncher
             }
             if (helpers.Count > 0) await Task.Delay(1500, ct);
 
+            ct.ThrowIfCancellationRequested();
             status($"Iniciando {g.Name}…");
             string args = (g.Args + " " + BuildArgs(p)).Trim();
             if (g.IsSteam) Process.Start(new ProcessStartInfo($"steam://rungameid/{g.Id}") { UseShellExecute = true });
@@ -190,7 +168,7 @@ public static class GameLauncher
                 await Task.Delay(1500, ct);
                 game = FindGameProcess(g.InstallDir, p.ExePath ?? g.ExePath);
             }
-            if (game == null) { status("Não detectei o processo do jogo (ele pode ter demorado a abrir). Os ajustes continuam aplicados."); return; }
+            if (game == null) { status("Não detectei o processo do jogo. Encerrando o acompanhamento e restaurando os ajustes temporários."); return; }
 
             while (game != null)
             {
@@ -218,7 +196,16 @@ public static class GameLauncher
         catch (Exception ex) { status("Falhou: " + ex.Message); }
         finally
         {
-            if (oldPlan != null) { try { PowerCfg($"/setactive {oldPlan}"); } catch { } }
+            if (serviceSession != null)
+            {
+                var errors = await Task.Run(serviceSession.Restore);
+                if (errors.Count > 0) status("Serviços com restauração pendente (veja Otimização): " + string.Join("; ", errors));
+            }
+            if (session != null)
+            {
+                var errors = session.Restore();
+                if (errors.Count > 0) status("Restauração pendente (veja Otimização): " + string.Join("; ", errors));
+            }
             foreach (var (proc, close) in helpers)
             {
                 if (!close) continue;

@@ -7,6 +7,7 @@ namespace ResetExplode;
 public partial class MainWindow
 {
     private GpuRtBench? _rtBench;
+    private bool _rtChecking;
 
     private static string PresetName(string p) => p switch { "normal" => "Normal", "extrema" => "Extrema", _ => "Alta" };
 
@@ -25,7 +26,11 @@ public partial class MainWindow
 
         string adapterName = _gpus.Count > 0 ? _gpus[0].Name : "";
         RtStatus.Text = "Verificando suporte a ray tracing…";
-        string? why = await Task.Run(() => GpuRtBench.CheckSupport(adapterName));
+        string? why;
+        _rtChecking = true;
+        try { why = await Task.Run(() => GpuRtBench.CheckSupport(adapterName)); }
+        catch (Exception ex) { RtStatus.Text = "Falhou: " + ex.Message; return; }
+        finally { _rtChecking = false; }
         if (why != null) { RtStatus.Text = why; return; }
 
         var size = (CheckedTag(RtResPanel) ?? "2560x1440").Split('x').Select(int.Parse).ToArray();

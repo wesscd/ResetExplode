@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../AtomicFile.cs" Link="AtomicFile.cs" />
+    <Compile Include="../../AppSettings.cs" Link="AppSettings.cs" />
+    <Compile Include="../../WindowsTweaks.cs" Link="WindowsTweaks.cs" />
+    <Compile Include="../../StartupManager.cs" Link="StartupManager.cs" />
+    <Compile Include="../../GameModeSession.cs" Link="GameModeSession.cs" />
+    <Compile Include="../../GamingOptimization.cs" Link="GamingOptimization.cs" />
+    <Compile Include="../../GpuOptimizationGuides.cs" Link="GpuOptimizationGuides.cs" />
+    <Compile Include="../../WindowsVisualEffects.cs" Link="WindowsVisualEffects.cs" />
+    <Compile Include="../../GamingServices.cs" Link="GamingServices.cs" />
+    <Compile Include="../../WindowsServiceAccess.cs" Link="WindowsServiceAccess.cs" />
+    <Compile Include="../../LiveOptimizationAudit.cs" Link="LiveOptimizationAudit.cs" />
+    <Compile Include="../../WindowsOptimizationInventory.cs" Link="WindowsOptimizationInventory.cs" />
+    <Compile Include="../../LiveProgramCloser.cs" Link="LiveProgramCloser.cs" />
+    <Compile Include="../../WindowsLiveProgramAccess.cs" Link="WindowsLiveProgramAccess.cs" />
+    <Compile Include="../../TemporaryServiceSession.cs" Link="TemporaryServiceSession.cs" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.2" />
+    <PackageReference Include="System.Management" Version="10.0.2" />
+  </ItemGroup>
+</Project>

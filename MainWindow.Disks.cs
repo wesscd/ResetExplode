@@ -175,7 +175,7 @@ public partial class MainWindow
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, "Não foi possível gerar o relatório:\n" + ex.Message, "RESET EXPLODE", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(this, "Não foi possível gerar o relatório:\n" + ex.Message, "BaraoTechExplode", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
         finally
         {
@@ -207,7 +207,7 @@ public partial class MainWindow
     {
         try
         {
-            var info = Application.GetResourceStream(new Uri("pack://application:,,,/Assets/logo-badge.png"));
+            var info = Application.GetResourceStream(new Uri("pack://application:,,,/Assets/baraotech.png"));
             using var ms = new MemoryStream();
             info.Stream.CopyTo(ms);
             return Convert.ToBase64String(ms.ToArray());

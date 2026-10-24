@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:ResetExplode"
-        Title="RESET EXPLODE" Icon="Assets/app.ico" Width="1320" Height="840" MinWidth="1120" MinHeight="660"
+        Title="BaraoTechExplode" Icon="Assets/baraotech.ico" Width="1320" Height="840" MinWidth="1120" MinHeight="660"
         WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize"
         Background="{DynamicResource Bg}" Foreground="{DynamicResource Fg}"
         FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="13"
@@ -120,10 +120,11 @@
 
             <!-- ===== Barra de título (marca + página atual + botões da janela) ===== -->
             <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" Margin="30,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Image x:Name="TitleLogo" Source="Assets/logo.png" Width="22" Height="22" Margin="0,0,12,0" VerticalAlignment="Center"
+                <Image x:Name="TitleLogo" Source="Assets/baraotech.png" Width="28" Height="28" Margin="0,0,12,0" VerticalAlignment="Center"
                        RenderOptions.BitmapScalingMode="HighQuality"/>
-                <TextBlock Text="RESET" FontWeight="Bold" FontSize="13" VerticalAlignment="Center"/>
-                <TextBlock Text=" EXPLODE" FontWeight="Light" FontSize="13" VerticalAlignment="Center"/>
+                <TextBlock Text="BaraoTech" FontWeight="Bold" FontSize="13" VerticalAlignment="Center"/>
+                <TextBlock Text="Explode" FontWeight="Light" FontSize="13" VerticalAlignment="Center"/>
+                <Button Content="SOBRE / CRÉDITOS" Style="{StaticResource OutlineButton}" FontSize="10" Padding="8,4" Margin="12,0,0,0" Click="BtnAboutFork_Click" WindowChrome.IsHitTestVisibleInChrome="True"/>
                 <TextBlock x:Name="TitlePage" Foreground="{DynamicResource Faint}" FontSize="13" Margin="16,0,0,0" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right"
@@ -183,7 +184,7 @@
                                     <TextBlock Text="Visão geral" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </RadioButton>
-                            <ToggleButton x:Name="GrpExplode" Style="{StaticResource NavGroup}" Content="RESET EXPLODE"/>
+                            <ToggleButton x:Name="GrpExplode" Style="{StaticResource NavGroup}" Content="BARAOTECH EXPLODE"/>
                             <StackPanel x:Name="GrpExplodeItems" Margin="10,0,0,4" Visibility="{Binding IsChecked, ElementName=GrpExplode, Converter={StaticResource BoolVis}}">
                             <RadioButton x:Name="NavSystem" Style="{StaticResource NavItem}" Tag="PageSystem" Checked="Nav_Checked">
                                 <StackPanel Orientation="Horizontal">
@@ -1085,7 +1086,22 @@
                                     <RadioButton Style="{StaticResource Chip}" GroupName="LPriority" Content="Acima do normal" Tag="above" Checked="LProfile_Changed"/>
                                     <RadioButton Style="{StaticResource Chip}" GroupName="LPriority" Content="Alta" Tag="high" Checked="LProfile_Changed"/>
                                 </WrapPanel>
-                                    <CheckBox x:Name="LChkPlan" Content="Plano de energia Alto desempenho enquanto joga (volta ao normal depois)" Margin="0,0,0,10" Click="LProfile_Changed"/>
+                                    <CheckBox x:Name="LChkGameMode" Content="Modo Jogo: Alto desempenho e pausa da captura do Windows durante a sessão" Margin="0,0,0,10" Click="LProfile_Changed"/>
+                                    <Expander Header="SERVIÇOS TEMPORÁRIOS DESTE JOGO · REVISAR IMPACTOS" Foreground="{DynamicResource Fg}" Margin="0,0,0,12">
+                                        <StackPanel Margin="0,10,0,0">
+                                            <TextBlock Text="Seleção opcional. Os serviços serão validados ao iniciar, desabilitados durante o acompanhamento e restaurados ao sair, cancelar ou fechar o aplicativo. Após interrupção forçada, use RESTAURAR SESSÃO PENDENTE em Otimização. Aplicativos fechados não são reabertos automaticamente." TextWrapping="Wrap" Foreground="{DynamicResource Muted}" Margin="0,0,0,10"/>
+                                            <ScrollViewer MaxHeight="240" VerticalScrollBarVisibility="Auto">
+                                                <ItemsControl x:Name="LTemporaryServices"><ItemsControl.ItemTemplate><DataTemplate>
+                                                    <CheckBox IsChecked="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Click="LProfile_Changed" Margin="0,0,0,10">
+                                                        <StackPanel><TextBlock Text="{Binding Title}" TextWrapping="Wrap"/><TextBlock Text="{Binding Impact}" TextWrapping="Wrap" Foreground="{DynamicResource Muted}" FontSize="11" MaxWidth="720" HorizontalAlignment="Left"/></StackPanel>
+                                                    </CheckBox>
+                                                </DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
+                                            </ScrollViewer>
+                                        </StackPanel>
+                                    </Expander>
+                                    <TextBlock x:Name="LUniversalModeNote" Text="O Modo Jogo universal está ativo em Otimização e será usado nesta sessão, preservando este perfil individual." Visibility="Collapsed" Foreground="{DynamicResource Muted}" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                    <TextBlock Text="Ao sair ou parar o acompanhamento, o plano e a captura voltam ao estado anterior. Pode aumentar consumo e temperatura; a captura do Game Bar fica indisponível durante a sessão." Foreground="{DynamicResource Faint}" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                    <CheckBox x:Name="LChkPlan" Content="Somente plano Alto desempenho enquanto joga (restaura ao terminar)" Margin="0,0,0,10" Click="LProfile_Changed"/>
                                     <CheckBox x:Name="LChkGpu" Content="Forçar a placa de vídeo dedicada (configuração gráfica do Windows)" Margin="0,0,0,10" Click="LProfile_Changed"/>
                                     <CheckBox x:Name="LChkFso" Content="Desativar otimizações de tela cheia do Windows" Margin="0,0,0,12" Click="LProfile_Changed"/>
                                     <TextBlock x:Name="LExeText" Foreground="{DynamicResource Faint}" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
@@ -2060,8 +2076,175 @@
                     <StackPanel Margin="36,30,36,30">
                         <StackPanel Margin="0,0,0,20">
                             <TextBlock Text="RESET OTIMIZA" Style="{StaticResource H1}"/>
-                            <TextBlock Text="Libera memória, fecha o que atrapalha e ajusta o Windows para jogos" Style="{StaticResource Sub}"/>
+                            <TextBlock Text="Diagnóstico, ajustes reversíveis e perfis para jogar" Style="{StaticResource Sub}"/>
                         </StackPanel>
+
+                        <Border Style="{StaticResource CardBorder}" Margin="0,0,0,14">
+                            <StackPanel>
+                                <TextBlock Text="EXTREMO · PERFIL GLOBAL PARA JOGOS" FontSize="19" FontWeight="SemiBold"/>
+                                <TextBlock Text="Ajustes do Windows para jogos de qualquer loja, com AMD, NVIDIA ou Intel. O perfil global permanece aplicado até você restaurar os originais; não precisa abrir o jogo pelo RESET." TextWrapping="Wrap" Foreground="{DynamicResource Muted}" Margin="0,8,0,10"/>
+                                <TextBlock Text="Revise a seleção. Alguns recursos dependem do jogo, GPU e driver; aplicar uma configuração não comprova ganho de FPS." TextWrapping="Wrap" Foreground="{DynamicResource Muted}"/>
+                                <WrapPanel Margin="0,14,0,8">
+                                    <Button x:Name="BtnExtremeApply" Content="REVISAR E APLICAR PERFIL" Style="{StaticResource PrimaryButton}" Margin="0,0,8,8" Click="BtnExtremeApply_Click"/>
+                                    <Button Content="RECRIAR SUGESTÃO" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnExtremeRebuild_Click"/>
+                                    <Button Content="RESTAURAR ORIGINAIS" Style="{StaticResource OutlineButton}" Margin="0,0,0,8" Click="BtnRestoreTweaks_Click"/>
+                                </WrapPanel>
+                                <Expander Header="SELECIONAR AJUSTES E CONFERIR EFEITOS" Foreground="{DynamicResource Fg}" Margin="0,0,0,12">
+                                    <ItemsControl x:Name="OptExtremeSteps" Margin="0,10,0,0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0" Padding="0,10">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                                        <CheckBox IsChecked="{Binding Selected}" IsEnabled="{Binding Available}" VerticalAlignment="Top" Margin="0,2,12,0"/>
+                                                        <StackPanel Grid.Column="1">
+                                                            <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Fg}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                                            <TextBlock Text="{Binding Preview}" FontFamily="{StaticResource Mono}" FontSize="11" Foreground="{DynamicResource Muted}" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                                                            <TextBlock Text="{Binding Note}" Foreground="{DynamicResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Expander>
+                                <CheckBox x:Name="OptUniversalMode" Content="Usar Modo Jogo temporário em qualquer jogo iniciado pela Biblioteca RESET" Click="OptUniversalMode_Click"/>
+                                <TextBlock Text="Na Biblioteca, aplica energia e pausa da captura durante a sessão, restaurando ao sair. Funciona com jogos detectados e .exe adicionados manualmente; os perfis individuais são preservados." TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource Muted}" Margin="0,5,0,0"/>
+                                <TextBlock x:Name="OptExtremeResult" TextWrapping="Wrap" Margin="0,12,0,0"/>
+                                <Expander Header="HISTÓRICO DE APLICAÇÕES" Foreground="{DynamicResource Fg}" Margin="0,10,0,0">
+                                    <ItemsControl x:Name="OptExtremeHistory" Margin="0,8,0,0">
+                                        <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="0,3"/></DataTemplate></ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Expander>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CardBorder}" Margin="0,0,0,14">
+                            <StackPanel>
+                                <TextBlock Text="GPU · AMD / NVIDIA / INTEL" Style="{StaticResource Label}"/>
+                                <TextBlock Text="Orientação no painel do fabricante. Estas opções não são aplicadas pelo botão do perfil global. Em PCs com várias GPUs, escolha a que executa o jogo." Foreground="{DynamicResource Muted}" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                <ComboBox x:Name="OptGpuTarget" Style="{StaticResource OptimizationGpuPicker}" DisplayMemberPath="Name" SelectedValuePath="Vendor" SelectionChanged="OptGpuTarget_Changed"/>
+                                <ItemsControl x:Name="OptGpuGuides" Margin="0,12,0,0">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Expander Header="{Binding Title}" Foreground="{DynamicResource Fg}" Margin="0,0,0,8">
+                                                <StackPanel Margin="0,8,0,6">
+                                                    <TextBlock Text="{Binding Scope}" FontSize="11" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                                    <TextBlock Text="{Binding Advice}" TextWrapping="Wrap" Foreground="{DynamicResource Muted}" Margin="0,6,0,8"/>
+                                                    <Button Content="DOCUMENTAÇÃO OFICIAL" Tag="{Binding Source}" Style="{StaticResource OutlineButton}" HorizontalAlignment="Left" FontSize="11" Click="OptGuideSource_Click"/>
+                                                </StackPanel>
+                                            </Expander>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <WrapPanel Margin="0,6,0,0">
+                                    <Button Content="ABRIR PAINEL / PÁGINA OFICIAL" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnOptGpuPanel_Click"/>
+                                    <Button Content="DRIVERS" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnOptDrivers_Click"/>
+                                    <Button Content="TELA E GPU DO WINDOWS" Tag="graphics" Style="{StaticResource OutlineButton}" Margin="0,0,0,8" Click="BtnOptSettings_Click"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CardBorder}" Margin="0,0,0,14">
+                            <Expander Header="AVANÇADO · SEGURANÇA, REDE E SISTEMA" Foreground="{DynamicResource Fg}">
+                                <StackPanel Margin="0,12,0,0">
+                                    <TextBlock x:Name="OptSecurityText" Text="Consulte o estado real de VBS e Integridade de Memória. Esses recursos não são desativados pelo perfil; qualquer avaliação envolve desempenho e proteção do sistema." TextWrapping="Wrap" Foreground="{DynamicResource Muted}"/>
+                                    <WrapPanel Margin="0,12,0,0">
+                                        <Button x:Name="BtnOptSecurity" Content="CONSULTAR VBS / INTEGRIDADE" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnOptSecurity_Click"/>
+                                        <Button Content="SEGURANÇA DO WINDOWS" Tag="security" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnOptSettings_Click"/>
+                                        <Button Content="DIAGNÓSTICO DE REDE" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnOptNetwork_Click"/>
+                                        <Button Content="INICIALIZAÇÃO" Style="{StaticResource OutlineButton}" Margin="0,0,0,8" Click="BtnOptStartup_Click"/>
+                                    </WrapPanel>
+                                    <TextBlock Text="Não use limpeza de Registro/cache de shaders, remoção de serviços ou comandos de temporizadores como rotina. Investigue o problema específico e compare o efeito de cada mudança. Ajustes de BIOS e overclock exigem validação de estabilidade." Foreground="{DynamicResource Muted}" TextWrapping="Wrap" FontSize="11"/>
+                                </StackPanel>
+                            </Expander>
+                        </Border>
+
+                        <Border Style="{StaticResource CardBorder}" Margin="0,0,0,14">
+                            <StackPanel>
+                                <TextBlock Text="ANÁLISE ATUAL · SERVIÇOS E APLICATIVOS" FontSize="19" FontWeight="SemiBold"/>
+                                <TextBlock Text="Inventário local com consumo observado, ação proposta e impacto funcional. Segurança e itens não validados são preservados. Nada começa selecionado; consumo atual não comprova ganho em FPS." TextWrapping="Wrap" Foreground="{DynamicResource Muted}" Margin="0,8,0,10"/>
+                                <WrapPanel>
+                                    <Button x:Name="BtnLiveScan" Content="ANALISAR ESTE PC" Style="{StaticResource PrimaryButton}" Margin="0,0,8,8" Click="BtnLiveScan_Click"/>
+                                    <Button x:Name="BtnLiveApply" Content="REVISAR E APLICAR PRÉVIA" IsEnabled="False" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnLiveApply_Click"/>
+                                    <Button Content="EXPORTAR RELATÓRIO" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnLiveExport_Click"/>
+                                    <Button x:Name="BtnLiveCancel" Content="CANCELAR APÓS ITEM ATUAL" IsEnabled="False" Style="{StaticResource OutlineButton}" Margin="0,0,0,8" Click="BtnLiveCancel_Click"/>
+                                </WrapPanel>
+                                <TextBlock x:Name="OptLiveStatus" Text="Clique em analisar para consultar os serviços instalados e os processos em execução na sua sessão." TextWrapping="Wrap" Foreground="{DynamicResource Muted}" Margin="0,4,0,10"/>
+                                <TextBlock Text="FILTRAR POR NOME, FABRICANTE OU CLASSIFICAÇÃO" FontSize="10" Foreground="{DynamicResource Muted}"/>
+                                <TextBox x:Name="OptLiveFilter" Margin="0,4,0,8" TextChanged="OptLiveFilter_Changed"/>
+                                <DataGrid x:Name="OptLiveList" Height="300" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" SelectionMode="Single" Foreground="{DynamicResource Fg}">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="✓" Width="38">
+                                            <DataGridTemplateColumn.CellTemplate><DataTemplate><CheckBox HorizontalAlignment="Center" IsChecked="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Available}"/></DataTemplate></DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Header="TIPO" Binding="{Binding Kind}" Width="80"/>
+                                        <DataGridTextColumn Header="SERVIÇO / PROGRAMA" Binding="{Binding Title}" Width="240"/>
+                                        <DataGridTextColumn Header="CLASSIFICAÇÃO" Binding="{Binding Classification}" Width="200"/>
+                                        <DataGridTextColumn Header="CPU · RAM · E/S DO PROCESSO" Binding="{Binding Resources}" Width="300"/>
+                                        <DataGridTextColumn Header="FABRICANTE DECLARADO" Binding="{Binding Company}" Width="180"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <TextBlock Text="CLIQUE EM UMA LINHA PARA VER A AÇÃO E O IMPACTO" FontSize="10" Foreground="{DynamicResource Muted}" Margin="0,8,0,4"/>
+                                <ScrollViewer MaxHeight="180" VerticalScrollBarVisibility="Auto"><TextBlock Text="{Binding SelectedItem.Details, ElementName=OptLiveList}" TextWrapping="Wrap" Foreground="{DynamicResource Fg}"/></ScrollViewer>
+                                <Expander Header="PRÉVIA DAS AÇÕES SELECIONADAS" IsExpanded="True" Foreground="{DynamicResource Fg}" Margin="0,12,0,18">
+                                    <ScrollViewer MaxHeight="240" VerticalScrollBarVisibility="Auto"><TextBlock x:Name="OptLivePreview" Text="Selecione itens disponíveis para montar a prévia. Nada foi alterado." TextWrapping="Wrap" Margin="0,10,0,0"/></ScrollViewer>
+                                </Expander>
+                                <TextBlock Text="CATÁLOGO VALIDADO · RESTAURAÇÃO DE SERVIÇOS" FontSize="15" FontWeight="SemiBold"/>
+                                <Expander Header="HISTÓRICO DE SERVIÇOS TEMPORÁRIOS POR JOGO" Foreground="{DynamicResource Fg}" Margin="0,10,0,12">
+                                    <StackPanel>
+                                        <TextBlock x:Name="OptTemporaryHistoryStatus" Text="Consulte as sessões do perfil por jogo na Biblioteca." TextWrapping="Wrap" Foreground="{DynamicResource Muted}" Margin="0,10,0,8"/>
+                                        <Button Content="ATUALIZAR HISTÓRICO" Style="{StaticResource OutlineButton}" HorizontalAlignment="Left" Click="BtnTemporaryHistory_Click"/>
+                                        <ScrollViewer MaxHeight="300" VerticalScrollBarVisibility="Auto"><ItemsControl x:Name="OptTemporaryHistory"><ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="0,10,0,4"/></DataTemplate></ItemsControl.ItemTemplate></ItemsControl></ScrollViewer>
+                                    </StackPanel>
+                                </Expander>
+                                <TextBlock Text="Perfil separado e reversível. Preserva segurança, atualizações, rede, áudio, controles, drivers e instalação/licenciamento de jogos. A seleção condicional pode desativar funções específicas; confira o efeito de cada item." TextWrapping="Wrap" Foreground="{DynamicResource Muted}" Margin="0,8,0,10"/>
+                                <TextBlock x:Name="OptServicesSummary" Text="Analise os serviços locais. Listas externas são referências: seus estados não são copiados para este PC. Serviços manuais/parados não comprovam consumo contínuo." TextWrapping="Wrap" Foreground="{DynamicResource Muted}"/>
+                                <WrapPanel Margin="0,12,0,8">
+                                    <Button x:Name="BtnServicesScan" Content="ANALISAR SERVIÇOS LOCAIS" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnServicesScan_Click"/>
+                                    <Button x:Name="BtnServicesApply" Content="REVISAR E APLICAR SELEÇÃO" IsEnabled="False" Style="{StaticResource PrimaryButton}" Margin="0,0,8,8" Click="BtnServicesApply_Click"/>
+                                    <Button x:Name="BtnServicesRestore" Content="RESTAURAR SERVIÇOS DO PERFIL" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnServicesRestore_Click"/>
+                                    <Button Content="VALIDAR LISTA .TXT" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnServicesAudit_Click"/>
+                                    <Button x:Name="BtnServicesCancel" Content="PARAR APÓS ITEM ATUAL" IsEnabled="False" Style="{StaticResource OutlineButton}" Margin="0,0,0,8" Click="BtnServicesCancel_Click"/>
+                                </WrapPanel>
+                                <Expander Header="CANDIDATOS E CONDIÇÕES DE USO" Foreground="{DynamicResource Fg}">
+                                    <ScrollViewer MaxHeight="400" VerticalScrollBarVisibility="Auto">
+                                        <ItemsControl x:Name="OptServicesList" Margin="0,8,0,0">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0" Padding="0,10">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                            <CheckBox IsChecked="{Binding Selected}" IsEnabled="{Binding Available}" Margin="0,2,12,0" VerticalAlignment="Top"/>
+                                                            <StackPanel Grid.Column="1" Margin="0,0,12,0">
+                                                                <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Fg}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                                                <TextBlock Text="{Binding State}" Foreground="{DynamicResource Muted}" FontFamily="{StaticResource Mono}" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                                                <TextBlock Text="{Binding Impact}" Foreground="{DynamicResource Muted}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                                            </StackPanel>
+                                                            <Button Grid.Column="2" Content="RESTAURAR" Tag="{Binding Name}" IsEnabled="{Binding HasBackup}" Style="{StaticResource OutlineButton}" FontSize="10" Padding="8,4" VerticalAlignment="Top" Click="BtnServiceRestoreOne_Click"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </Expander>
+                                <TextBlock x:Name="OptServicesResult" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CardBorder}" Margin="0,0,0,14">
+                            <StackPanel>
+                                <TextBlock Text="DIAGNÓSTICO PARA JOGOS" Style="{StaticResource Label}"/>
+                                <TextBlock x:Name="OptDiagnosticReport" TextWrapping="Wrap" Foreground="{DynamicResource Muted}"/>
+                                <WrapPanel Margin="0,14,0,0">
+                                    <Button x:Name="BtnOptDiagnose" Content="ATUALIZAR DIAGNÓSTICO" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnOptDiagnose_Click"/>
+                                    <Button Content="CONFIGURAR MODO JOGO" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnOptLibrary_Click"/>
+                                    <Button x:Name="BtnRecoverGameMode" Content="RESTAURAR SESSÃO PENDENTE" Style="{StaticResource OutlineButton}" Margin="0,0,0,8" Click="BtnRecoverGameMode_Click"/>
+                                </WrapPanel>
+                                <TextBlock x:Name="OptTweakResult" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                            </StackPanel>
+                        </Border>
 
                         <!-- Botão principal -->
                         <Border Style="{StaticResource CardBorder}" Margin="0,0,0,14" Padding="24,20">
@@ -2083,12 +2266,14 @@
                                         </Border>
                                     </Grid>
                                     <TextBlock Foreground="{DynamicResource Muted}" TextWrapping="Wrap">
-                                        Um clique: limpa a memória em espera e fecha os programas marcados na lista abaixo.
-                                        Use antes de abrir um jogo.
+                                        Feche somente os programas que você escolher. A limpeza de memória é opcional;
+                                        liberar RAM não comprova ganho de FPS.
                                     </TextBlock>
+                                    <CheckBox x:Name="OptCleanMemory" Content="Também limpar memória em espera e reduzir working sets" Margin="0,10,0,0"/>
+                                    <TextBlock Text="Pode causar recarregamento de dados e engasgos. Use para diagnóstico de pressão de memória, não como rotina obrigatória." Foreground="{DynamicResource Faint}" FontSize="11" TextWrapping="Wrap" Margin="0,5,0,0"/>
                                     <TextBlock x:Name="OptResult" TextWrapping="Wrap" Margin="0,10,0,0"/>
                                 </StackPanel>
-                                <Button x:Name="BtnOptimize" Grid.Column="1" Style="{StaticResource PrimaryButton}" Content="RESET OTIMIZA"
+                                <Button x:Name="BtnOptimize" Grid.Column="1" Style="{StaticResource PrimaryButton}" Content="APLICAR SELEÇÃO"
                                         FontSize="16" Padding="34,16" VerticalAlignment="Center" Click="BtnOptimize_Click"/>
                             </Grid>
                         </Border>
@@ -2140,11 +2325,11 @@
                             <!-- Ajustes do Windows -->
                             <Border Grid.Column="2" Style="{StaticResource CardBorder}" VerticalAlignment="Top">
                                 <StackPanel>
-                                    <Grid Margin="0,0,0,6">
+                                    <StackPanel Margin="0,0,0,6">
                                         <TextBlock Text="AJUSTES DO WINDOWS PARA JOGOS" Style="{StaticResource Label}"/>
                                         <Button Style="{StaticResource OutlineButton}" Content="RESTAURAR ORIGINAIS" Padding="10,4" FontSize="11"
                                                 HorizontalAlignment="Right" VerticalAlignment="Top" Click="BtnRestoreTweaks_Click"/>
-                                    </Grid>
+                                    </StackPanel>
                                     <TextBlock Foreground="{DynamicResource Faint}" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,10">
                                         O interruptor mostra o estado atual e aplica na hora. O valor original é guardado na primeira
                                         alteração. Não mexemos em segurança (Defender, Integridade de Memória, UAC, Windows Update).
@@ -2158,7 +2343,7 @@
                                                             <ColumnDefinition Width="Auto"/>
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <CheckBox IsChecked="{Binding IsOn, Mode=OneWay}" Tag="{Binding}" Click="Tweak_Click"
+                                                        <CheckBox IsChecked="{Binding IsOn, Mode=OneWay}" IsEnabled="{Binding IsSupported}" Tag="{Binding}" Click="Tweak_Click"
                                                                   VerticalAlignment="Top" Margin="0,1,12,0"/>
                                                         <StackPanel Grid.Column="1">
                                                             <Grid>
@@ -2168,7 +2353,11 @@
                                                             </Grid>
                                                             <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                                             <TextBlock Text="{Binding Effect}" Foreground="{DynamicResource Faint}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                            <TextBlock Text="{Binding State}" FontWeight="SemiBold" FontSize="11" Margin="0,6,0,0"/>
+                                                            <TextBlock Text="{Binding Compatibility}" Foreground="{DynamicResource Faint}" FontSize="11" TextWrapping="Wrap"/>
+                                                            <TextBlock Text="{Binding Guidance}" Foreground="{DynamicResource Muted}" FontSize="11" TextWrapping="Wrap"/>
                                                             <TextBlock Text="{Binding Status}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                            <Button Content="RESTAURAR ESTE AJUSTE" Style="{StaticResource OutlineButton}" Tag="{Binding}" IsEnabled="{Binding HasBackup}" HorizontalAlignment="Left" FontSize="10" Padding="8,4" Margin="0,8,0,0" Click="BtnRestoreTweak_Click"/>
                                                         </StackPanel>
                                                     </Grid>
                                                 </Border>
@@ -2454,7 +2643,7 @@
                                             HorizontalAlignment="Right" VerticalAlignment="Top" Click="BtnMakerBundleAll_Click"/>
                                 </Grid>
                                 <TextBlock Foreground="{DynamicResource Faint}" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,10">
-                                    Drivers oficiais de cada fabricante que já vêm dentro do RESET EXPLODE: instalam sem internet, ideal logo depois
+                                    Drivers oficiais de cada fabricante que já vêm dentro do BaraoTechExplode: instalam sem internet, ideal logo depois
                                     de formatar. Pode instalar com a placa desconectada; o Windows usa o driver quando ela for plugada.
                                     Os drivers Arduino são assinados pela Arduino (não pela Microsoft): o Windows pode pedir confirmação.
                                 </TextBlock>

@@ -13,6 +13,7 @@ public partial class MainWindow
     private GameProfile? _lp;
     private bool _lLoading, _launcherInited;
     private CancellationTokenSource? _launchCts;
+    private Task? _launchTask;
     private readonly Dictionary<string, string?> _exeGuess = new();
 
     private static readonly (string Label, string Token, string? Hint)[] ExtraPresets =
@@ -121,6 +122,14 @@ public partial class MainWindow
         LSub.Text = $"{g.Store} · {g.InstallDir}";
         SetChip(LPriorityPanel, p.Priority);
         LChkPlan.IsChecked = p.HighPerfPlan;
+        LChkGameMode.IsChecked = p.GameMode;
+        p.TemporaryServices ??= new();
+        LTemporaryServices.ItemsSource = GamingServiceCatalog.Rules.Select(rule => new ServiceProfileRow
+        {
+            Name = rule.Name, Title = rule.Title + " · " + rule.Name, Impact = rule.Impact,
+            Available = true, Selected = p.TemporaryServices.Contains(rule.Name, StringComparer.OrdinalIgnoreCase)
+        }).ToList();
+        LUniversalModeNote.Visibility = _settings.UniversalGameMode ? Visibility.Visible : Visibility.Collapsed;
         LChkGpu.IsChecked = p.GpuHigh;
         LChkFso.IsChecked = p.DisableFso;
         SetChip(LModePanel, p.WinMode);
@@ -166,6 +175,8 @@ public partial class MainWindow
         if (_lLoading || _lp == null || LPreview == null) return;
         _lp.Priority = CheckedTag(LPriorityPanel) ?? "normal";
         _lp.HighPerfPlan = LChkPlan.IsChecked == true;
+        _lp.GameMode = LChkGameMode.IsChecked == true;
+        _lp.TemporaryServices = LTemporaryServices.Items.OfType<ServiceProfileRow>().Where(r => r.Selected).Select(r => r.Name).ToList();
         _lp.GpuHigh = LChkGpu.IsChecked == true;
         _lp.DisableFso = LChkFso.IsChecked == true;
         _lp.WinMode = CheckedTag(LModePanel) ?? "default";
@@ -185,6 +196,7 @@ public partial class MainWindow
         if (_lp == null || LPreview == null) return;
         string a = GameLauncher.BuildArgs(_lp);
         LPreview.Text = a.Length > 0 ? a : "(nenhum argumento)";
+        if (_lp.TemporaryServices.Count > 0) LPreview.Text += "\nServiços temporários: " + string.Join(", ", _lp.TemporaryServices) + ". Restaura ao terminar o acompanhamento.";
     }
 
     private void BtnRecommended_Click(object sender, RoutedEventArgs e)
@@ -272,11 +284,23 @@ public partial class MainWindow
         var p = _lp;
         if (g == null || p == null) return;
 
+        if (AnyBenchRunning || TestRunning || _netRunning)
+        { LStatus.Text = "Termine o teste antes de iniciar o jogo."; return; }
+        if (_settings.RecoveryRequired)
+        { LStatus.Text = _settings.LoadWarning; return; }
+        if ((GameModeSession.HasPending || TemporaryServiceSession.HasPending))
+        { LStatus.Text = "Restaure a sessão pendente na aba Otimização antes de jogar."; return; }
+
+        if (p.TemporaryServices.Count > 0 && !ReviewExtremeSelection(
+            string.Join("\n\n", p.TemporaryServices.Select(name => GamingServiceCatalog.Find(name) is { } rule ? rule.Title + " · " + name + "\n" + rule.Impact : name + " · não validado; será rejeitado")),
+            "SERVIÇOS TEMPORÁRIOS · " + g.Name,
+            "Desabilitar e parar durante o acompanhamento. Os estados originais serão guardados separadamente e restaurados ao sair ou cancelar. Se houver falha, o registro permanece para recuperação em Otimização. Nenhum ganho de FPS medido.")) return;
         _launchCts = new CancellationTokenSource();
         BtnPlay.Content = "PARAR ACOMPANHAMENTO";
         try
         {
-            await GameLauncher.RunAsync(g, p,
+            var effectiveProfile = GamingOptimization.EffectiveProfile(p, _settings.UniversalGameMode);
+            _launchTask = GameLauncher.RunAsync(g, effectiveProfile,
                 t => Dispatcher.BeginInvoke(new Action(() => LStatus.Text = t)),
                 exe => Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -288,12 +312,15 @@ public partial class MainWindow
                     }
                 })),
                 _launchCts.Token);
+            await _launchTask;
         }
         finally
         {
             _launchCts?.Dispose();
             _launchCts = null;
             BtnPlay.Content = "JOGAR";
+            RefreshOptimizationState();
+            RefreshTemporaryHistory();
         }
     }
 }

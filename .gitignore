@@ -3,6 +3,7 @@ bin/
 obj/
 publish/
 ResetExplode-dist/
+BaraoTechExplode-dist/
 *.exe
 *.dll
 *.pdb

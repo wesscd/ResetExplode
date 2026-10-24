@@ -244,7 +244,18 @@ public partial class MainWindow
         OcHistory.ItemsSource = source.Select((BenchRecord r) => new MeterItem($"{r.Date:dd/MM HH:mm}", r.Summary, r.Score)).ToList();
     }
 
+    private Task? _ocTask;
+
     private async void BtnOcCheck_Click(object sender, RoutedEventArgs e)
+    {
+        if (_ocRunning) { _ocCts?.Cancel(); return; }
+        _ocTask = RunOcCheckAsync();
+        try { await _ocTask; }
+        catch (Exception ex) { OcStatus.Text = "Verificação inconclusiva: " + ex.Message; }
+        finally { _ocCts?.Dispose(); _ocCts = null; }
+    }
+
+    private async Task RunOcCheckAsync()
     {
         if (_ocRunning)
         {
@@ -261,6 +272,11 @@ public partial class MainWindow
         bool cpu = flag;
         flag = ((text == "gpu" || text == "both") ? true : false);
         bool gpu = flag;
+        if ((cpu && _monitor.CpuTemperature == null) || (gpu && MainGpuTemp() == null))
+        {
+            OcStatus.Text = "Verificação indisponível: é necessário ler a temperatura dos componentes testados.";
+            return;
+        }
         TimeSpan duration = TimeSpan.FromMinutes(int.Parse(CheckedTag(OcDurPanel) ?? "15"));
         string label = ((OcLabel.Text.Trim().Length > 0) ? OcLabel.Text.Trim() : "sem descrição");
         _ocCts = new CancellationTokenSource();
@@ -281,7 +297,7 @@ public partial class MainWindow
         double sumGpuW = 0.0;
         int nCpuW = 0;
         int nGpuW = 0;
-        string fail = null;
+        string? fail = null;
         StressTester stress = new StressTester();
         GpuBurn burn = new GpuBurn();
         try
@@ -289,7 +305,7 @@ public partial class MainWindow
             if (cpu)
             {
                 OcStatus.Text = "Medindo a nota da CPU (render multi-core)…";
-                BenchResult benchResult = await Task.Run(() => _bench.Run(Environment.ProcessorCount, TimeSpan.Zero, ct), ct);
+                BenchResult benchResult = await GuardOcLoadAsync(Task.Run(() => _bench.Run(Environment.ProcessorCount, TimeSpan.Zero, ct), ct), cpu, false, reason => fail = reason);
                 if (!ct.IsCancellationRequested)
                 {
                     cpuScore = benchResult.Score;
@@ -303,10 +319,10 @@ public partial class MainWindow
                     Duration = TimeSpan.FromSeconds(30.0),
                     AdapterName = ((_gpus.Count > 0) ? _gpus[0].Name : "")
                 };
-                _gpuBenchActive = true;
+                // No verificador, manter sensores ativos é necessário para o corte térmico.
                 using (ct.Register(gb.Cancel))
                 {
-                    GpuGameResult gpuGameResult = await Task.Factory.StartNew((Func<GpuGameResult>)gb.Run, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+                    GpuGameResult? gpuGameResult = await GuardOcLoadAsync(Task.Factory.StartNew(gb.Run, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default), false, gpu, reason => fail = reason);
                     if (gpuGameResult != null)
                     {
                         gpuScore = gpuGameResult.Score;
@@ -344,6 +360,8 @@ public partial class MainWindow
                     await Task.Delay(1000);
                     float? cpuTemperature = _monitor.CpuTemperature;
                     float? num = MainGpuTemp();
+                    if ((cpu && !cpuTemperature.HasValue) || (gpu && !num.HasValue))
+                    { fail = "leitura de temperatura perdida; verificação inconclusiva"; break; }
                     if (cpuTemperature.HasValue)
                     {
                         float valueOrDefault = cpuTemperature.GetValueOrDefault();
@@ -411,6 +429,7 @@ public partial class MainWindow
                     if ((int)sw.Elapsed.TotalSeconds % 5 == 0)
                     {
                         HardwareErrors hardwareErrors = OcCheck.ErrorsSince(start);
+                        if (hardwareErrors.Error != null) { fail = "não foi possível consultar erros de hardware: " + hardwareErrors.Error; break; }
                         if (hardwareErrors.Total > 0)
                         {
                             fail = $"o Windows registrou {hardwareErrors.Whea} erros WHEA e {hardwareErrors.GpuResets} reinícios do driver de vídeo";
@@ -423,6 +442,7 @@ public partial class MainWindow
         catch (OperationCanceledException)
         {
         }
+        catch (Exception ex) { fail = "verificação incompleta: " + ex.Message; }
         finally
         {
             stress.Stop();
@@ -442,13 +462,14 @@ public partial class MainWindow
             return;
         }
         HardwareErrors hardwareErrors2 = OcCheck.ErrorsSince(start);
+        if (fail == null && hardwareErrors2.Error != null) fail = "leitura de erros de hardware indisponível: " + hardwareErrors2.Error;
         if (fail == null && hardwareErrors2.Total > 0)
         {
             fail = $"o Windows registrou {hardwareErrors2.Whea} erros WHEA e {hardwareErrors2.GpuResets} reinícios do driver de vídeo";
         }
         bool flag4 = fail == null;
         OcStatus.Text = $"Concluído em {DateTime.Now - start:mm\\:ss}.";
-        OcVerdict.Text = (flag4 ? "ESTÁVEL" : "INSTÁVEL");
+        OcVerdict.Text = (flag4 ? "SEM ERROS DETECTADOS" : "NÃO APROVADO");
         OcVerdictWhy.Text = (flag4 ? $"Nenhum erro em {duration.TotalMinutes:0} min de stress. Para Curve Optimizer, use o PC normalmente por um dia e confira os erros recentes." : ("Motivo: " + fail + ". Volte um passo no ajuste e teste de novo."));
         OcVerdictCard.Background = (flag4 ? Card : Fg);
         TextBlock ocVerdict = OcVerdict;
@@ -523,6 +544,23 @@ public partial class MainWindow
         _settings.Save();
         UpdateOcHistory();
         UpdateRecentErrors();
+    }
+
+    private async Task<T> GuardOcLoadAsync<T>(Task<T> task, bool cpu, bool gpu, Action<string> failed)
+    {
+        while (!task.IsCompleted)
+        {
+            float? cpuTemp = _monitor.CpuTemperature;
+            float? gpuTemp = MainGpuTemp();
+            if ((cpu && (cpuTemp == null || cpuTemp >= 95)) || (gpu && (gpuTemp == null || gpuTemp >= 88)))
+            {
+                failed("limite térmico atingido ou leitura de temperatura indisponível durante a medição");
+                _ocCts?.Cancel();
+                break;
+            }
+            await Task.WhenAny(task, Task.Delay(500));
+        }
+        return await task;
     }
 
     private void BuildOcGuide()

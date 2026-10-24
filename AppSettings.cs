@@ -24,6 +24,8 @@ public sealed class GameProfile
 {
     public string Priority { get; set; } = "normal";   // normal | above | high
     public bool HighPerfPlan { get; set; }
+    public bool GameMode { get; set; }
+    public List<string> TemporaryServices { get; set; } = new();
     public bool GpuHigh { get; set; }
     public bool DisableFso { get; set; }
     public string? ExePath { get; set; }
@@ -46,9 +48,15 @@ public sealed class CustomGame
 /// <summary>Configurações em %AppData%\ResetExplode. A chave da API é cifrada com DPAPI (só este usuário do Windows a lê).</summary>
 public sealed class AppSettings
 {
+    [System.Text.Json.Serialization.JsonIgnore]
+    public string? LoadWarning { get; private set; }
+    [System.Text.Json.Serialization.JsonIgnore]
+    public bool RecoveryRequired { get; private set; }
     public static string Folder { get; } =
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ResetExplode");
     private static string FilePath => Path.Combine(Folder, "settings.json");
+    [System.Text.Json.Serialization.JsonIgnore]
+    internal string StoragePath { get; set; } = FilePath;
 
     public string? HowManyFpsKeyProtected { get; set; }
 
@@ -62,6 +70,8 @@ public sealed class AppSettings
     public byte[]? ComDbBackup { get; set; }
     /// <summary>Programas de inicialização removidos, para "Restaurar removidos".</summary>
     public List<StartupBackup> StartupRemoved { get; set; } = new();
+    public bool UniversalGameMode { get; set; }
+    public List<OptimizationRun> OptimizationHistory { get; set; } = new();
 
     // RESET JOGOS
     public Dictionary<string, GameProfile> GameProfiles { get; set; } = new();
@@ -97,20 +107,44 @@ public sealed class AppSettings
         }
     }
 
-    public static AppSettings Load()
+    public static AppSettings Load() => LoadFrom(FilePath);
+
+    internal static AppSettings LoadFrom(string filePath)
     {
-        try
+        Exception? failure = null;
+        foreach (string path in new[] { filePath, filePath + ".bak" })
         {
-            if (File.Exists(FilePath))
-                return JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(FilePath)) ?? new AppSettings();
+            if (!File.Exists(path)) continue;
+            try
+            {
+                var settings = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(path))
+                    ?? throw new InvalidDataException("Configurações vazias.");
+                if (settings.TweakBackup == null || settings.GameProfiles == null || settings.BenchRecords == null ||
+                    settings.BenchRuns == null || settings.CustomGames == null || settings.StartupRemoved == null)
+                    throw new InvalidDataException("Configurações incompletas.");
+                settings.StoragePath = filePath;
+                settings.OptimizationHistory ??= new();
+                if (path != filePath)
+                {
+                    // Preserva a cópia válida: não a substitui pelo arquivo corrompido.
+                    AtomicFile.Write(filePath, JsonSerializer.Serialize(settings), keepBackup: false);
+                    settings.LoadWarning = "Configurações recuperadas da cópia de segurança.";
+                }
+                return settings;
+            }
+            catch (Exception ex) { failure = ex; }
         }
-        catch { }
-        return new AppSettings();
+        return new AppSettings
+        {
+            StoragePath = filePath,
+            RecoveryRequired = failure != null,
+            LoadWarning = failure == null ? null : "Não foi possível recuperar as configurações. Os arquivos foram preservados em " + Folder + ": " + failure.Message
+        };
     }
 
     public void Save()
     {
-        Directory.CreateDirectory(Folder);
-        File.WriteAllText(FilePath, JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true }));
+        if (RecoveryRequired) throw new InvalidOperationException(LoadWarning);
+        AtomicFile.Write(StoragePath, JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true }));
     }
 }

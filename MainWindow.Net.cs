@@ -91,6 +91,6 @@ public partial class MainWindow
         BtnTheme.Content = light ? "\uE708" : "\uE706";
         BtnTheme.ToolTip = light ? "Modo escuro" : "Modo claro";
         TitleLogo.Source = new System.Windows.Media.Imaging.BitmapImage(
-            new Uri(light ? "pack://application:,,,/Assets/logo-dark.png" : "pack://application:,,,/Assets/logo.png"));
+            new Uri(light ? "pack://application:,,,/Assets/baraotech.png" : "pack://application:,,,/Assets/baraotech.png"));
     }
 }

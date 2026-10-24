@@ -1,12 +1,22 @@
-# RESET EXPLODE — v0.16
+# BaraoTechExplode
 
-> **Download oficial:** apenas em [github.com/GustavoReset/ResetExplode/releases](https://github.com/GustavoReset/ResetExplode/releases).
-> O app roda como administrador; não use versões baixadas de outros lugares.
->
-> **Contribuições:** este projeto não aceita pull requests. Fique à vontade para fazer um *fork* e modificar a sua própria cópia
-> (licença [MIT](LICENSE): mantenha o aviso de copyright).
+Este projeto é um **fork do [RESET EXPLODE](https://github.com/GustavoReset/ResetExplode)**. O código principal foi desenvolvido por **Gustavo da Reset (GustavoReset)**. O BaraoTechExplode, da [Barão Tech](https://baraotech.online/), aproveita a leitura de sensores, hardware e desempenho da base original para desenvolver diagnóstico e otimização para jogos, com prévia dos impactos, backup e restauração.
 
-## Novidades da v0.16
+O fork tem identidade e alterações próprias e não é uma versão oficial do projeto original. A licença [MIT](LICENSE) e o copyright original de Gustavo permanecem preservados. O crédito também aparece em **Sobre / Créditos** e nos relatórios HTML.
+
+O ícone e a marca deste fork usam o [logotipo da Barão Tech](https://baraotech.online/assets/logo.png), fornecido pelo site indicado pelo responsável pelo fork; isso não atribui a marca ao autor original nem altera a licença do código-base. Os arquivos visuais originais foram mantidos no repositório.
+
+### Serviços temporários por jogo e histórico
+
+Na Biblioteca, abra um jogo e expanda **Serviços temporários deste jogo**. Revise o impacto de cada opção e salve a seleção no perfil. Nada vem selecionado por padrão. Ao clicar em **Jogar**, uma revisão apresenta os serviços escolhidos; o backend valida novamente os candidatos e as dependências antes de aplicar.
+
+Os originais ficam em `game-services-session.json.services`, separados de `services-profile.json`, e o manifesto em `game-services-session.json`. Ao terminar o acompanhamento, cancelar ou fechar normalmente o aplicativo, a restauração é tentada. Se o aplicativo ou o Windows forem interrompidos, use **Restaurar sessão pendente** em Otimização. As falhas preservam os originais e bloqueiam nova sessão até a recuperação. O histórico das últimas 50 sessões e tentativas é persistido em `game-services-history.json`; as dez últimas aparecem no painel de serviços.
+
+A restauração devolve o estado anterior à sessão, inclusive ajustes permanentes previamente aplicados. Aplicativos fechados manualmente não são reabertos. O acompanhamento não mede um ganho de FPS automaticamente; compare cenários equivalentes usando as ferramentas de desempenho.
+
+Para preservar configurações e backups desta cópia existente, o diretório de dados continua `%AppData%\ResetExplode` e o namespace técnico continua `ResetExplode`. O mutex de instância é compartilhado com a versão anterior: feche o aplicativo antigo antes de abrir o fork. O executável distribuído passa a ser `BaraoTechExplode.exe`.
+
+## Funcionalidades herdadas da base v0.16
 - **Inicialização** (RESET FERRAMENTAS): veja, desative ou remova os programas que abrem junto com o Windows, com opção de desfazer.
 - **Instalar apps** (RESET FERRAMENTAS): Steam, Chrome, Discord, Lightshot, 7-Zip, WinRAR e VLC de uma vez depois de formatar, pelo winget.
 - **RESET MAKER** (nova categoria): Portas COM (fantasmas e números COM presos, que saiu de Otimização) e Drivers seriais
@@ -115,7 +125,49 @@ App WPF (.NET 8) com:
   e fecham junto). Em jogos da Steam, um botão grava os argumentos nas **opções de inicialização** (`localconfig.vdf`, com backup, fechando a Steam antes).
   O botão JOGAR aplica o perfil, inicia e desfaz o que for temporário quando o jogo fecha.
 
+## RESET OTIMIZA · diagnóstico e Modo Jogo
+
+- Em **Otimização**, atualize o diagnóstico para revisar RAM, temperaturas, alimentação e plano de energia. As leituras representam o momento atual; use **Gargalo** durante uma partida para investigar limitações.
+- Cada ajuste mostra estado, compatibilidade, orientação e opção de restaurar individualmente. HAGS exige suporte da GPU/driver e comparação após reiniciar; o programa não presume ganho de FPS.
+- Os originais são gravados **antes** da alteração. As configurações usam substituição atômica e cópia `.bak`; restaurações com falha mantêm o backup para nova tentativa. Se ambas as cópias estiverem inválidas, elas são preservadas e novas gravações são bloqueadas.
+- A limpeza de RAM é opcional e começa desmarcada. Ela pode exigir recarregar dados e não comprova ganho de desempenho.
+- Em **Biblioteca → Desempenho**, marque **Modo Jogo** por jogo: usa Alto desempenho e pausa a captura do Windows durante o acompanhamento. Ao terminar, cancelar ou fechar normalmente o app, restaura os valores anteriores. Pode aumentar consumo e temperatura.
+- Se o app for encerrado à força, abra **Otimização → Restaurar sessão pendente**. O registro `game-session.json` é preservado enquanto houver falhas na restauração. Não há alterações automáticas na abertura do app.
+- **Extremo · perfil global** permite revisar e aplicar um conjunto de ajustes do Windows que permanece ativo até restaurar os originais, inclusive para jogos abertos fora do RESET. Não há dependência de CS2, engine, loja ou fabricante de GPU. Cada ajuste mantém suas condições de compatibilidade.
+- O perfil sugere Modo de Jogo, desativação de captura (desmarque se usa gravação) e otimizações de janela quando compatíveis. Alto desempenho é sugerido somente na tomada, com leituras de CPU abaixo de 85 °C e de GPU abaixo de 80 °C. Se a leitura faltar ou estiver alta, a opção permanece disponível para seleção manual.
+- P2P de atualizações, transparências, animações, HAGS e aceleração do mouse são opções explícitas. P2P usa `DODownloadMode=0` (HTTP Only), preservando Windows Update; animações usam `SystemParametersInfo`, sem editar máscaras binárias. Esses ajustes não são uma promessa de FPS ou ping.
+- A área **GPU** oferece orientação no Adrenalin (AMD), painel NVIDIA e Intel, com documentação oficial. A escolha de GPU pode ser manual em sistemas híbridos. Anti-Lag, Chill, Boost, FSR/RSR e HYPR-RX/AFMF não são alterados automaticamente; disponibilidade e combinações dependem do hardware, driver e jogo.
+- **Usar Modo Jogo temporário em qualquer jogo da Biblioteca** habilita a sessão temporária como padrão também para `.exe` adicionados manualmente, preservando o perfil salvo de cada jogo. A execução usa uma cópia do perfil para evitar que edições na interface alterem uma sessão já aberta.
+- O histórico registra aplicações e falhas, sem tratar alteração de configuração como ganho medido. A consulta de VBS/Integridade de Memória é somente leitura e não desliga proteções. Comparação automática antes/depois fica para uma etapa posterior.
+
+Referências consultadas: [Hone](https://hone.gg/pt), [Medium](https://medium.com/@sethterranova2166/how-to-optimize-windows-for-better-gaming-performance-9ea20e074143), [VinfoSmart](https://vinfosmart.com.br/aprenda-a-otimizar-o-windows-11-para-jogos-e-ganhe-mais-desempenho-guia-completo-sobre-modo-jogo-vbs-drivers-e-mais-conte-com-a-vinfosmart/), [XboxPlay](https://xboxplay.games/pt/news/como-otimizar-as-configuraes-do-amd-radeon-69597) e [discussão AMDHelp](https://www.reddit.com/r/AMDHelp/comments/1lnxb8o/ultimate_amd_performance_fix_guide_stop_lag_fps/). São referências de requisitos e hipóteses; scripts e receitas não foram importados. O vídeo informado não pôde ser acessado e não foi auditado.
+
+As decisões técnicas foram conferidas nas fontes oficiais: [otimizações de janela](https://support.microsoft.com/en-us/windows/hardware/display-graphics/optimizations-for-windowed-games-in-windows-11), [Delivery Optimization](https://learn.microsoft.com/en-us/windows/deployment/do/waas-delivery-optimization-reference), [SystemParametersInfo](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-systemparametersinfow), [gráficos Radeon](https://www.amd.com/en/resources/support-articles/faqs/DH-012.html), [Anti-Lag](https://www.amd.com/en/products/software/adrenalin/radeon-software-anti-lag.html) e [HYPR-RX](https://www.amd.com/en/products/software/adrenalin/hypr-rx.html).
+
+### Perfil de serviços para jogos
+
+Em **Otimização → Serviços · Segurança preservada**, analise os serviços locais antes de aplicar. O catálogo fechado contém candidatos opcionais e mostra os efeitos da perda de cada função. A sugestão inicial considera apenas os poucos candidatos marcados como sugeridos que estejam automáticos e em execução; não presume ganho de FPS. Impressão, câmera, busca, relatórios de erros e descoberta de dispositivos são condicionais e começam desmarcados.
+
+Segurança (inclusive antivírus de terceiros não reconhecido), autenticação, firewall, auditoria, drivers, áudio, entrada, rede, atualizações, instalação/licenciamento de jogos, serviços por usuário e serviços não validados ficam fora da lista de alterações. Em particular, AppXSvc, ClipSVC, Gaming Services/Xbox, GameInputSvc, WinHttpAutoProxySvc, iphlpsvc, SysMain, NVIDIA Display Container e serviços de gerenciamento corporativo são preservados.
+
+O perfil não importa os estados de inicialização de listas externas, não modifica permissões/ACLs e não força parada de processos. Dependentes instalados, drivers, estados transitórios e serviços que não aceitam parada bloqueiam a mudança. Os originais (tipo de inicialização, automático atrasado e estado parado/em execução) são gravados em `%AppData%\ResetExplode\services-profile.json` antes de qualquer alteração. Falhas de aplicação tentam reverter a tentativa; falhas de restauração mantêm os originais. A restauração é individual ou em lote e funciona após reabrir o app. O botão **Restaurar originais** dos ajustes de Registro é separado de **Restaurar serviços do perfil**.
+
+**Parar após item atual** interrompe o lote entre serviços, depois da tentativa de mudança/restauração em andamento. Ao fechar o app, ele aguarda essa tentativa terminar. Alterações concluídas persistem até restaurar; não são automaticamente revertidas ao fechar o jogo. Nenhum serviço do computador foi alterado durante o desenvolvimento e os testes usam um backend simulado.
+
+A lista fornecida contém 254 registros, sem medições de CPU/disco. A classificação completa está em [reports/services-validation.txt](reports/services-validation.txt): 24 preservados como segurança, 73 como funcionalidade, 15 condicionais e 142 preservados por falta de validação/identidade específica. Essa classificação não confirma que todos existem neste PC. O botão **Validar lista .txt** exporta uma auditoria de referências no formato ServiWin, sem executar ou importar instruções presentes no arquivo.
+
+Referências de validação: [tópico fornecido](https://www.reddit.com/r/Windows10HowTo/comments/119tetf/which_windows_11_services_to_disable_for_gaming/), [guia Microsoft para dispositivos IoT de função específica](https://learn.microsoft.com/windows/iot/iot-enterprise/optimize/services) e [configuração oficial de serviços](https://learn.microsoft.com/en-us/windows/win32/services/service-configuration). Recomendações de IoT/servidor não foram tratadas como receita universal para Windows de uso geral.
+
+### Executar verificações
+
+Verificações de persistência, recuperação e restauração, com arquivos temporários e ajustes simulados (sem alterar configurações reais):
+
+```powershell
+dotnet run --project tests/OptimizationChecks/OptimizationChecks.csproj -c Release
+```
+
 ## Interface
+
 - Visual preto e branco minimalista em **blocos** (cartões arredondados, inspirado em painéis de dashboard). Um único menu lateral
   com *Visão geral* no topo e categorias **RESET** recolhíveis (começam fechadas; clique para ver as sub-abas):
   - *Visão geral* (`MainWindow.Dash.cs`): gráfico de área CPU × GPU (temperatura, carga ou consumo; 1/5/15 min),
@@ -143,16 +195,27 @@ App WPF (.NET 8) com:
   A LibreHardwareMonitorLib 0.9.6+ usa o PawnIO no lugar do antigo WinRing0, que o Windows Defender bloqueia.
 
 ## Como rodar
+
+### Análise atual de serviços e aplicativos
+
+Em **Otimização → Análise atual**, use **Analisar este PC**. O inventário consulta todos os serviços instalados e mostra processos da sessão atual, estado, fabricante declarado, caminho e uma amostra de aproximadamente dois segundos de CPU, RAM e E/S. A análise é somente leitura e começa sem seleções.
+
+Selecione uma linha para ver ação proposta, impacto funcional e benefício esperado. A prévia permite revisar antes de aplicar. Somente serviços do catálogo validado e aplicativos opcionais conhecidos com janela podem receber ações; segurança, dependências e itens desconhecidos são preservados. A identidade dos processos e o estado dos serviços são conferidos novamente ao aplicar. A prévia expira após dois minutos.
+
+Serviços alterados têm os originais persistidos em `services-profile.json` na pasta de dados do aplicativo e podem ser restaurados pelo painel do catálogo. Aplicativos recebem pedido normal de fechamento, sem encerramento forçado ou reabertura automática; salve o trabalho. O relatório JSON exporta o inventário e a seleção, incluindo caminhos locais.
+
+CPU é normalizada pela capacidade total do processador. RAM é working set e pode incluir páginas compartilhadas; E/S inclui operações além de disco. Consumo de um host compartilhado pertence ao processo inteiro. Esses números não são uma previsão de memória liberada ou ganho em FPS. Falhas de leitura são indicadas, e validações incompletas bloqueiam as ações correspondentes.
+
 ```
 cd ResetExplode
 dotnet run
 ```
 O app pede privilégio de administrador (necessário para sensores de baixo nível).
-Para levar a outro PC: dê dois cliques em `publicar.bat`. Ele gera `..\ResetExplode-dist\ResetExplode.exe` (arquivo único, com o .NET embutido,
+Para levar a outro PC: dê dois cliques em `publicar.bat`. Ele gera `..\BaraoTechExplode-dist\BaraoTechExplode.exe` (arquivo único, com o .NET embutido,
 sem caminhos do seu usuário) + `LEIA-ME.txt`. No outro PC só é preciso instalar o PawnIO. Rode de novo após cada alteração no código.
 
 ### Baixar a versão mais recente
-A cada push na `main`, o GitHub Actions (`.github/workflows/publicar.yml`) gera o `ResetExplode.exe` e atualiza a release
+A cada push na `main`, o GitHub Actions (`.github/workflows/publicar.yml`) gera o `BaraoTechExplode.exe` e atualiza a release
 **latest** (aba *Releases* do repositório), com o `.exe` e um `.zip`. É só baixar de lá, sem compilar.
 Ao criar uma tag (`git tag v0.12` e `git push --tags`), também sai uma release fixa dessa versão.
 

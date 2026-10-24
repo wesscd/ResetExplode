@@ -1,4 +1,17 @@
-RESET EXPLODE
+BaraoTechExplode
+
+Fork do RESET EXPLODE de Gustavo da Reset (GustavoReset).
+Codigo principal: https://github.com/GustavoReset/ResetExplode
+Este fork da Barao Tech aproveita sensores e desempenho da base original
+para desenvolver diagnostico e otimizacao para jogos com backup e restauracao.
+Nao e uma versao oficial do projeto original. Licenca MIT e copyright
+(c) 2026 Gustavo (GustavoReset) preservados no arquivo LICENSE.
+Marca e logotipo do fork: Barao Tech, https://baraotech.online/
+
+Servicos temporarios: selecione no perfil do jogo na Biblioteca.
+Ao terminar o acompanhamento, os originais sao restaurados. Apos falha
+ou interrupcao forcada, use RESTAURAR SESSAO PENDENTE em Otimizacao.
+Historico disponivel no painel de servicos. Confira os impactos antes de aplicar.
 =============
 
 Ferramenta de diagnóstico de hardware: informações do sistema, sensores, placa de vídeo,
@@ -15,7 +28,7 @@ REQUISITOS
   Se instalou o PawnIO e mesmo assim não aparecer, reinicie o PC.
 
 COMO USAR
-- Abra o ResetExplode.exe. Na primeira vez ele demora alguns segundos para iniciar.
+- Abra o BaraoTechExplode.exe. Na primeira vez ele demora alguns segundos para iniciar.
 - Se o Windows mostrar "O Windows protegeu o computador", clique em "Mais informações"
   e depois em "Executar assim mesmo" (o programa não tem assinatura digital paga).
 - Overlay: Ctrl + Shift + O liga e desliga.
