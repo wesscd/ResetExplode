@@ -309,7 +309,7 @@ public partial class MainWindow
             _activeGameKey = g.Key;
             _activeGameProfile = effectiveProfile;
             _launchTask = GameLauncher.RunAsync(g, effectiveProfile,
-                t => Dispatcher.BeginInvoke(new Action(() => LStatus.Text = t)),
+                t => { OptimizationLog.Write("JOGO", "INFO", g.Name, t); Dispatcher.BeginInvoke(new Action(() => LStatus.Text = t)); },
                 exe => Dispatcher.BeginInvoke(new Action(() =>
                 {
                     if (!string.Equals(p.ExePath, exe, StringComparison.OrdinalIgnoreCase))

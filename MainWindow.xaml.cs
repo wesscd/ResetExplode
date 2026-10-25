@@ -80,6 +80,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        InitOptimizationConsole();
         ThemeManager.Apply(_settings.LightTheme);
         UpdateThemeButton();
         ShowPage("PageDash");
@@ -147,6 +148,8 @@ public partial class MainWindow : Window
         };
         Closed += (_, _) =>
         {
+            if (_consoleStore != null) _consoleStore.Written -= ConsoleEntryWritten;
+            OptimizationLog.Store = null;
             _timer.Stop(); _overlayTimer?.Stop();
             _stress.Stop(); _burn.Stop(); _benchCts?.Cancel();
             _overlay?.Close();
@@ -897,6 +900,7 @@ public partial class MainWindow : Window
         BtnOptimize.Content = "OTIMIZANDO…";
         OptResult.Text = "";
         _optimizationBusy = true;
+        OptimizationLog.Write("FERRAMENTAS AVANÇADAS", "INÍCIO", "Programas e memória", $"{toClose.Count} grupos selecionados; limpeza de memória={clean}.");
         try
         {
             var closeResult = await Task.Run(() => Optimizer.CloseApps(toClose));
@@ -911,11 +915,12 @@ public partial class MainWindow : Window
             if (closeResult.NotClosed.Count > 0)
                 parts.Add($"não fecharam (podem ter algo não salvo ou pedir confirmação): {string.Join(", ", closeResult.NotClosed)}");
             OptResult.Text = string.Join(" · ", parts) + ".";
+            OptimizationLog.Write("FERRAMENTAS AVANÇADAS", "RESULTADO", "Programas e memória", OptResult.Text);
             RefreshApps();
             UpdateRamStatus();
             UpdateOptimizationDiagnosis();
         }
-        catch (Exception ex) { OptResult.Text = "Falhou: " + ex.Message; }
+        catch (Exception ex) { OptResult.Text = "Falhou: " + ex.Message; OptimizationLog.Write("FERRAMENTAS AVANÇADAS", "FALHA", "Programas e memória", ex.Message); }
         finally { _optimizationBusy = false; BtnOptimize.IsEnabled = true; BtnOptimize.Content = "APLICAR SELEÇÃO"; }
     }
 

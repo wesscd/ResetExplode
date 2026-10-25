@@ -1,5 +1,11 @@
 BaraoTechExplode
 
+v0.19: pagina OTIMIZACAO GUIADA com etapas e console fixo no rodape.
+Analise, marque caixas, revise e confirme. Clicar na linha so mostra detalhes.
+O console mostra o resultado de cada etapa e fica salvo em
+%AppData%\ResetExplode\logs. Use COPIAR ou EXPORTAR para diagnosticar falhas.
+Registros anteriores a esta versao nao sao reconstruidos retroativamente.
+
 Fork do RESET EXPLODE de Gustavo da Reset (GustavoReset).
 Codigo principal: https://github.com/GustavoReset/ResetExplode
 Este fork da Barao Tech aproveita sensores e desempenho da base original

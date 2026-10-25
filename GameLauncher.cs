@@ -133,8 +133,10 @@ public static class GameLauncher
             string? exe = p.ExePath ?? g.ExePath ?? FindMainExe(g.InstallDir, g.Name);
             if (exe != null && File.Exists(exe))
             {
-                try { SetGpuPreference(exe, p.GpuHigh); } catch { }
-                try { SetDisableFso(exe, p.DisableFso); } catch { }
+                try { SetGpuPreference(exe, p.GpuHigh); OptimizationLog.Write("PERFIL POR JOGO", "CONFIGURADO", g.Name, $"Preferência de GPU dedicada={p.GpuHigh}; não confirma a GPU usada pelo jogo."); }
+                catch (Exception ex) { OptimizationLog.Write("PERFIL POR JOGO", "FALHA", g.Name, "Preferência de GPU: " + ex.Message); }
+                try { SetDisableFso(exe, p.DisableFso); OptimizationLog.Write("PERFIL POR JOGO", "CONFIGURADO", g.Name, $"Desativar otimizações de tela cheia={p.DisableFso}."); }
+                catch (Exception ex) { OptimizationLog.Write("PERFIL POR JOGO", "FALHA", g.Name, "Tela cheia: " + ex.Message); }
             }
 
             foreach (var h in p.Helpers.Where(h => File.Exists(h.Path)))
@@ -192,8 +194,8 @@ public static class GameLauncher
             }
             status($"{g.Name} encerrado. Ajustes temporários desfeitos.");
         }
-        catch (OperationCanceledException) { status("Acompanhamento cancelado."); }
-        catch (Exception ex) { status("Falhou: " + ex.Message); }
+        catch (OperationCanceledException) { status("Acompanhamento cancelado."); OptimizationLog.Write("PERFIL POR JOGO", "CANCELADO", g.Name, "Acompanhamento cancelado; iniciando restauração temporária."); }
+        catch (Exception ex) { status("Falhou: " + ex.Message); OptimizationLog.Write("PERFIL POR JOGO", "FALHA", g.Name, ex.Message); }
         finally
         {
             if (serviceSession != null)

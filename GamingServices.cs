@@ -120,27 +120,31 @@ public sealed class GamingServiceProfile
 
     public GamingServiceResult Apply(string name)
     {
-        if (GamingServiceCatalog.Find(name) is not { } rule) return new(name, false, "Serviço protegido ou fora da lista validada.");
+        OptimizationLog.Write("SERVIÇOS", "INÍCIO", name, "Validando antes de desabilitar e parar.");
+        if (GamingServiceCatalog.Find(name) is not { } rule) return Report(name, false, "Serviço protegido ou fora da lista validada.", "BLOQUEADO");
         GamingServiceSnapshot? before = null;
         bool changed = false, added = false;
         try
         {
             before = _access.Read(rule.Name);
-            if (before == null) return new(name, false, "Não instalado neste PC.");
+            if (before == null) return Report(name, false, "Não instalado neste PC.", "BLOQUEADO");
+            OptimizationLog.Write("SERVIÇOS", "ESTADO", name, "Leitura atual.", Describe(before));
             if (!before.Name.Equals(rule.Name, StringComparison.OrdinalIgnoreCase)) throw new IOException("Identidade do serviço não confirmada.");
             if (!before.IsUserService || before.Start is < 2 or > 4 || before.State is not ("Running" or "Stopped"))
-                return new(name, false, "Driver, estado transitório ou configuração não suportada; preservado.");
-            if (before.Dependents.Count > 0) return new(name, false, "Preservado: outros serviços dependem dele (" + string.Join(", ", before.Dependents) + ").");
-            if (before.State == "Running" && !before.CanStop) return new(name, false, "Não aceita parada; preservado sem forçar.");
-            if (before.Start == rule.TargetStart && before.State == "Stopped") return new(name, true, "Já estava configurado; nenhuma mudança.");
+                return Report(name, false, "Driver, estado transitório ou configuração não suportada; preservado.", "BLOQUEADO");
+            if (before.Dependents.Count > 0) return Report(name, false, "Preservado: outros serviços dependem dele (" + string.Join(", ", before.Dependents) + ").", "BLOQUEADO");
+            if (before.State == "Running" && !before.CanStop) return Report(name, false, "Não aceita parada; preservado sem forçar.", "BLOQUEADO");
+            if (before.Start == rule.TargetStart && before.State == "Stopped") return Report(name, true, "Já estava configurado; nenhuma mudança.", "SEM ALTERAÇÃO");
             if (!_journal.Originals.Any(s => s.Name.Equals(rule.Name, StringComparison.OrdinalIgnoreCase)))
             { _journal.Originals.Add(before); added = true; }
             Save(); // obrigatório antes de alterar o SCM
+            OptimizationLog.Write("SERVIÇOS", "BACKUP", name, "Original persistido em " + _path);
             changed = true;
             _access.Configure(rule.Name, rule.TargetStart, false);
             if (before.State == "Running") _access.Stop(rule.Name);
             var after = _access.Read(rule.Name);
             if (after?.Start != rule.TargetStart || after.State != "Stopped") throw new IOException("O Windows não confirmou a alteração.");
+            OptimizationLog.Write("SERVIÇOS", "APLICADO", name, "Parado e desabilitado. Original salvo; efeito em FPS não medido.", Describe(before), Describe(after));
             return new(name, true, "Parado e desabilitado. Original salvo; efeito em FPS não medido.");
         }
         catch (Exception ex)
@@ -153,20 +157,26 @@ public sealed class GamingServiceProfile
                     RestoreState(before);
                     if (added) RemoveSaved(before);
                     recovery = " Estado desta tentativa restaurado.";
+                    OptimizationLog.Write("SERVIÇOS", "RESTAURADO", name, "Reversão da tentativa confirmada.", after: Describe(before));
                 }
                 catch (Exception restore) { recovery = " Restauração pendente: " + restore.Message; }
             }
-            return new(name, false, ex.Message + recovery);
+            return Report(name, false, ex.Message + recovery, "FALHA");
         }
     }
 
     public GamingServiceResult Restore(string name)
     {
+        OptimizationLog.Write("SERVIÇOS", "INÍCIO", name, "Restaurando estado original.");
         var snapshot = _journal.Originals.FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        if (snapshot == null) return new(name, false, "Nenhum original salvo por este perfil.");
-        try { RestoreState(snapshot); RemoveSaved(snapshot); return new(name, true, "Inicialização e estado de execução restaurados."); }
-        catch (Exception ex) { return new(name, false, "Original preservado; restauração pendente: " + ex.Message); }
+        if (snapshot == null) return Report(name, false, "Nenhum original salvo por este perfil.", "SEM ALTERAÇÃO");
+        try { RestoreState(snapshot); RemoveSaved(snapshot); OptimizationLog.Write("SERVIÇOS", "RESTAURADO", name, "Inicialização e estado confirmados.", after: Describe(snapshot)); return new(name, true, "Inicialização e estado de execução restaurados."); }
+        catch (Exception ex) { return Report(name, false, "Original preservado; restauração pendente: " + ex.Message, "PENDENTE"); }
     }
+
+    private static string Describe(GamingServiceSnapshot state) => $"início={state.Start} (2 automático, 3 manual, 4 desabilitado), atrasado={state.Delayed}, estado={state.State}";
+    private static GamingServiceResult Report(string name, bool success, string detail, string status)
+    { OptimizationLog.Write("SERVIÇOS", status, name, detail); return new(name, success, detail); }
 
     private void RemoveSaved(GamingServiceSnapshot snapshot)
     {

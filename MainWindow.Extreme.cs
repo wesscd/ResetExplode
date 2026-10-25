@@ -46,10 +46,11 @@ public partial class MainWindow
     {
         if (!CanChangeOptimization()) return;
         var selected = _extremeChoices?.Where(c => c.Selected && c.Available).ToList() ?? new();
-        if (selected.Count == 0) { OptExtremeResult.Text = "Nenhum ajuste selecionado. Abra a seleção para escolher os itens."; return; }
+        if (selected.Count == 0) { ShowOptimizationBlock("Nenhum ajuste do Windows selecionado. Abra SELECIONAR AJUSTES para marcar os itens; itens já ativos não precisam de aplicação."); return; }
         string preview = string.Join("\n\n", selected.Select(c => c.Title + "\n" + c.Preview + "\n" + c.Note));
         if (!ReviewExtremeSelection(preview)) return;
         _optimizationBusy = true;
+        OptimizationLog.Write("PERFIL WINDOWS", "INÍCIO", "Seleção confirmada", $"{selected.Count} ajustes selecionados. Os resultados serão registrados individualmente.");
         BtnExtremeApply.IsEnabled = false;
         try
         {
@@ -62,11 +63,12 @@ public partial class MainWindow
             try { _settings.Save(); }
             catch (Exception ex) { historyError = "\nNão foi possível gravar o histórico: " + ex.Message; }
             OptExtremeResult.Text = run.Summary + "\n" + string.Join("\n", results.Select(r => r.Title + ": " + r.Detail)) + historyError;
+            OptimizationLog.Write("PERFIL WINDOWS", results.Any(r => r.State == "failed") ? "FINALIZADO COM FALHAS" : "CONCLUÍDO", "Lote", OptExtremeResult.Text);
             RefreshOptimizationState();
             UpdateOptimizationDiagnosis();
             RefreshExtremeHistory();
         }
-        catch (Exception ex) { OptExtremeResult.Text = "Aplicação incompleta: " + ex.Message + ". Confira os backups e restaure os itens necessários."; }
+        catch (Exception ex) { OptExtremeResult.Text = "Aplicação incompleta: " + ex.Message + ". Confira os backups e restaure os itens necessários."; OptimizationLog.Write("PERFIL WINDOWS", "FALHA", "Lote", OptExtremeResult.Text); }
         finally { _optimizationBusy = false; BtnExtremeApply.IsEnabled = true; }
     }
 
@@ -104,7 +106,9 @@ public partial class MainWindow
             }
         });
         dialog.Content = root;
-        return dialog.ShowDialog() == true;
+        bool confirmed = dialog.ShowDialog() == true;
+        OptimizationLog.Write("REVISÃO", confirmed ? "CONFIRMADO" : "CANCELADO", heading, confirmed ? "Usuário confirmou a seleção apresentada." : "Usuário voltou sem aplicar a seleção.");
+        return confirmed;
     }
 
     private void OptGpuTarget_Changed(object sender, SelectionChangedEventArgs e)

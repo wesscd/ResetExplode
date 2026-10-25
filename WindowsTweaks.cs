@@ -1,4 +1,4 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
@@ -211,25 +211,39 @@ public static class WindowsTweaks
 
     public static void Apply(Tweak t, bool enabled, AppSettings s)
     {
-        if (!t.IsSupported) throw new InvalidOperationException("Ajuste incompatível com esta versão do Windows.");
-        t.Capture(s);
-        // O estado original precisa estar persistido ANTES de tocar no Windows.
-        s.Save();
-        t.HasBackup = HasBackup(t, s);
-        t.Write(enabled, s);
-        t.Refresh();
+        OptimizationLog.Write("WINDOWS", "INÍCIO", t.Title, enabled ? "Solicitado ativar." : "Solicitado desativar.", t.State);
+        try
+        {
+            if (!t.IsSupported) throw new InvalidOperationException("Ajuste incompatível com esta versão do Windows.");
+            t.Capture(s);
+            // O estado original precisa estar persistido ANTES de tocar no Windows.
+            s.Save();
+            OptimizationLog.Write("WINDOWS", "BACKUP", t.Title, "Original persistido antes da alteração.");
+            t.HasBackup = HasBackup(t, s);
+            t.Write(enabled, s);
+            t.Refresh();
+            OptimizationLog.Write("WINDOWS", t.CurrentValue == enabled ? "APLICADO" : "PENDENTE", t.Title,
+                t.CurrentValue == enabled ? (t.NeedsRestart ? "Estado confirmado; requer reiniciar para avaliar." : "Estado confirmado pelo Windows.") : "O estado lido não confirmou a mudança.", after: t.State);
+            }
+        catch (Exception ex) { OptimizationLog.Write("WINDOWS", "FALHA", t.Title, ex.Message); throw; }
     }
 
     public static void RestoreOne(Tweak t, AppSettings s)
     {
-        if (!HasBackup(t, s)) return;
-        t.Restore(s);
-        var removed = s.TweakBackup.Where(kv => kv.Key == t.Id || kv.Key.StartsWith(t.Id + ".", StringComparison.Ordinal)).ToList();
-        foreach (var kv in removed) s.TweakBackup.Remove(kv.Key);
-        try { s.Save(); }
-        catch { foreach (var kv in removed) s.TweakBackup[kv.Key] = kv.Value; throw; }
-        t.HasBackup = false;
-        t.Refresh();
+        if (!HasBackup(t, s)) { OptimizationLog.Write("WINDOWS", "SEM ALTERAÇÃO", t.Title, "Nenhum original salvo para restaurar."); return; }
+        OptimizationLog.Write("WINDOWS", "INÍCIO", t.Title, "Restaurando original.", t.State);
+        try
+        {
+            t.Restore(s);
+            var removed = s.TweakBackup.Where(kv => kv.Key == t.Id || kv.Key.StartsWith(t.Id + ".", StringComparison.Ordinal)).ToList();
+            foreach (var kv in removed) s.TweakBackup.Remove(kv.Key);
+            try { s.Save(); }
+            catch { foreach (var kv in removed) s.TweakBackup[kv.Key] = kv.Value; throw; }
+            t.HasBackup = false;
+            t.Refresh();
+            OptimizationLog.Write("WINDOWS", "RESTAURADO", t.Title, t.NeedsRestart ? "Original restaurado; requer reiniciar." : "Original restaurado.", after: t.State);
+            }
+        catch (Exception ex) { OptimizationLog.Write("WINDOWS", "FALHA", t.Title, "Restauração: " + ex.Message); throw; }
     }
 
     public static List<string> RestoreAll(IEnumerable<Tweak> tweaks, AppSettings s)

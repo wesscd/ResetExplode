@@ -34,6 +34,18 @@ As últimas 100 sessões são persistidas em `game-performance.json` com gravaç
 
 Um aviso no topo de todas as páginas identifica diários pendentes de energia, captura e serviços temporários, com os estados originais disponíveis e botão de restauração. Arquivos corrompidos ou órfãos também são sinalizados e preservados. A abertura apenas consulta os registros; a restauração ocorre ao clicar no botão e fica bloqueada durante testes e medições. O aviso não aparece para uma sessão de jogo que está sendo acompanhada normalmente.
 
+### Otimização guiada e console (v0.19)
+
+A página começa com **Comece aqui**, seguida da análise de serviços/aplicativos e dos ajustes permanentes do Windows. O catálogo alternativo de serviços e as ferramentas anteriores ficam recolhidos em áreas avançadas. A seleção de ajustes do Windows fica aberta para revisão. Atalhos levam ao perfil temporário por jogo e à restauração dos serviços.
+
+O fluxo é: **analisar → marcar caixas → conferir impactos → revisar e confirmar → conferir console**. Clicar numa linha mostra detalhes; marcar a caixa seleciona a ação. Um inventário sem candidatos e uma seleção vazia são explicados. Botões de aplicação indisponíveis mostram o motivo ao passar o mouse. Bloqueios por jogo, medição, outra operação ou sessão pendente aparecem na área da operação e no console.
+
+O **console de otimização**, fixo no rodapé da página, é somente leitura. Exibe horário, área, etapa/resultado, item, motivo e estados anterior/posterior quando disponíveis. Registra backups antes de mudanças, confirmações lidas do Windows, itens já configurados, bloqueios, falhas, reversões e restaurações, além do perfil temporário por jogo. Preferências de GPU configuradas não são apresentadas como prova de que o jogo usou aquela GPU.
+
+Os registros ficam em `%AppData%\ResetExplode\logs\optimization-AAAA-MM-DD.jsonl`, sem envio automático. A tela exibe até 500 registros recentes de até sete arquivos diários; os arquivos anteriores não são apagados. É possível filtrar, copiar, exportar a visualização em TXT ou abrir a pasta. Os registros podem conter caminhos locais e nomes de programas. Logs antigos não são reconstruídos: alterações de versões anteriores continuam nos backups/históricos disponíveis, mas não ganham um registro retroativo completo.
+
+Falha de gravação do log é identificada na própria linha e mantém o resultado visível, sem interromper a restauração. Os backups obrigatórios continuam independentes: se não puderem ser persistidos, a alteração correspondente não é executada. Linhas incompletas de log são preservadas e sinalizadas ao carregar o histórico.
+
 ## Funcionalidades herdadas da base v0.16
 - **Inicialização** (RESET FERRAMENTAS): veja, desative ou remova os programas que abrem junto com o Windows, com opção de desfazer.
 - **Instalar apps** (RESET FERRAMENTAS): Steam, Chrome, Discord, Lightshot, 7-Zip, WinRAR e VLC de uma vez depois de formatar, pelo winget.

@@ -66,6 +66,7 @@ public sealed class GameModeSession
             for (int i = 0; i < CaptureValues.Length; i++) session.OriginalCapture.Add(access.ReadCapture(i));
         }
         AtomicFile.Write(journalPath, JsonSerializer.Serialize(session), keepBackup: false);
+        OptimizationLog.Write("MODO JOGO", "BACKUP", game, "Originais da sessão persistidos antes de alterar energia/captura.", session.OriginalPlan);
         try
         {
             if (power)
@@ -75,6 +76,7 @@ public sealed class GameModeSession
             }
             if (pauseCapture)
                 for (int i = 0; i < CaptureValues.Length; i++) access.SetCapture(i, 0);
+            OptimizationLog.Write("MODO JOGO", "APLICADO", game, $"Energia temporária={power}; pausa de captura={pauseCapture}.");
             return session;
         }
         catch (Exception ex)
@@ -132,6 +134,7 @@ public sealed class GameModeSession
         }
         if (errors.Count == 0)
             try { File.Delete(journalPath); } catch (Exception ex) { errors.Add(ex.Message); }
+        OptimizationLog.Write("MODO JOGO", errors.Count == 0 ? "RESTAURADO" : "PENDENTE", Game, errors.Count == 0 ? "Energia/captura restauradas." : string.Join("; ", errors));
         return errors;
     }
 }

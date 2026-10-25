@@ -40,6 +40,7 @@ public sealed class TemporaryServiceSession
             throw new InvalidDataException("Seleção temporária inválida; nenhuma alteração aplicada.");
         var session = new TemporaryServiceSession(path, access, new() { Game = game, Services = names });
         session.Save(); // manifesto antes de qualquer configuração
+        OptimizationLog.Write("SERVIÇOS TEMPORÁRIOS", "INÍCIO", game, "Seleção por jogo: " + string.Join(", ", names));
         try
         {
             var profile = new GamingServiceProfile(path + ".services", access);
@@ -103,6 +104,7 @@ public sealed class TemporaryServiceSession
             }
         }
         catch (Exception ex) { errors.Add("Serviços temporários: " + ex.Message); }
+        OptimizationLog.Write("SERVIÇOS TEMPORÁRIOS", errors.Count == 0 ? "RESTAURADO" : "PENDENTE", _journal.Game, errors.Count == 0 ? "Sessão de serviços restaurada." : string.Join("; ", errors));
         return errors;
     }
 

@@ -9,12 +9,9 @@ public partial class MainWindow
 
     private bool CanChangeOptimization()
     {
-        string? reason = _settings.RecoveryRequired ? _settings.LoadWarning
-            : AnyBenchRunning || TestRunning || _netRunning ? "Termine o teste, otimização ou acompanhamento do jogo antes de alterar o sistema."
-            : (GameModeSession.HasPending || TemporaryServiceSession.HasPending) ? "Restaure primeiro a sessão de jogo pendente."
-            : null;
+        string? reason = _settings.RecoveryRequired ? _settings.LoadWarning : OptimizationActivityBlockReason();
         if (reason == null) return true;
-        OptTweakResult.Text = reason;
+        ShowOptimizationBlock(reason);
         return false;
     }
 
@@ -100,14 +97,16 @@ public partial class MainWindow
     private async Task RecoverTemporarySessionAsync()
     {
         _optimizationBusy = true;
+        OptimizationLog.Write("RECUPERAÇÃO", "INÍCIO", "Sessão pendente", "Restaurando energia, captura e serviços temporários.");
         BtnRecoverGameMode.IsEnabled = false;
         BtnBannerRecover.IsEnabled = false;
         try
         {
             var errors = await Task.Run(() => GameModeSession.Recover().Concat(TemporaryServiceSession.Recover()).ToList());
             OptTweakResult.Text = errors.Count == 0 ? "Sessão restaurada: energia, captura e serviços temporários voltaram ao estado anterior." : "Restauração pendente: " + string.Join("; ", errors);
+            OptimizationLog.Write("RECUPERAÇÃO", errors.Count == 0 ? "RESTAURADO" : "PENDENTE", "Sessão pendente", OptTweakResult.Text);
         }
-        catch (Exception ex) { OptTweakResult.Text = "Restauração pendente: " + ex.Message; }
+        catch (Exception ex) { OptTweakResult.Text = "Restauração pendente: " + ex.Message; OptimizationLog.Write("RECUPERAÇÃO", "FALHA", "Sessão pendente", ex.Message); }
         finally { _optimizationBusy = false; }
         RefreshOptimizationState();
         UpdateOptimizationDiagnosis();

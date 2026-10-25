@@ -56,13 +56,14 @@ public static class GamingOptimization
         foreach (var choice in choices.Where(c => c.Selected))
         {
             var tweak = choice.Tweak;
+            OptimizationLog.Write("PERFIL WINDOWS", "REVISÃO", tweak.Title, choice.Preview);
             if (!tweak.IsSupported)
-            { results.Add(new(tweak.Id, tweak.Title, "unsupported", "Indisponível neste Windows.")); continue; }
+            { OptimizationLog.Write("PERFIL WINDOWS", "BLOQUEADO", tweak.Title, "Indisponível neste Windows."); results.Add(new(tweak.Id, tweak.Title, "unsupported", "Indisponível neste Windows.")); continue; }
             try
             {
                 tweak.Refresh(); // a prévia pode ter envelhecido
                 if (tweak.CurrentValue == choice.Target)
-                { results.Add(new(tweak.Id, tweak.Title, "unchanged", "Já estava no estado escolhido.")); continue; }
+                { OptimizationLog.Write("PERFIL WINDOWS", "SEM ALTERAÇÃO", tweak.Title, "Já estava no estado escolhido.", after: tweak.State); results.Add(new(tweak.Id, tweak.Title, "unchanged", "Já estava no estado escolhido.")); continue; }
                 WindowsTweaks.Apply(tweak, choice.Target, settings);
                 if (tweak.CurrentValue != choice.Target) throw new InvalidOperationException("O estado lido não confirmou a alteração.");
                 results.Add(new(tweak.Id, tweak.Title, "applied", tweak.NeedsRestart ? "Reinicie para avaliar o efeito." : "Configuração aplicada; ganho não medido."));

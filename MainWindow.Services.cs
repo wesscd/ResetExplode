@@ -55,8 +55,9 @@ public partial class MainWindow
 
     private bool CanManageServices()
     {
-        if (!_serviceBusy && !AnyBenchRunning && !TestRunning && !(GameModeSession.HasPending || TemporaryServiceSession.HasPending)) return true;
-        OptServicesResult.Text = "Termine os testes, a otimização ou o acompanhamento do jogo e restaure sessões pendentes antes de gerenciar serviços.";
+        string? reason = OptimizationActivityBlockReason();
+        if (reason == null) return true;
+        ShowOptimizationBlock(reason);
         return false;
     }
 
@@ -67,6 +68,7 @@ public partial class MainWindow
         BtnServicesScan.IsEnabled = BtnServicesApply.IsEnabled = BtnServicesRestore.IsEnabled = false;
         BtnServicesCancel.IsEnabled = true;
         OptServicesResult.Text = "Processando. A parada nunca é forçada nem propagada para dependentes…";
+        OptimizationLog.Write("SERVIÇOS", "INÍCIO", "Operação", OptServicesResult.Text);
         try
         {
             var result = await Task.Run(() =>
@@ -82,8 +84,9 @@ public partial class MainWindow
             OptServicesResult.Text = result.Results.Count == 0 ? "Nenhuma alteração de serviço nesta operação. Confira os candidatos e os backups disponíveis." :
                 string.Join("\n", result.Results.Select(r => $"{r.Name}: {(r.Success ? "OK" : "PENDENTE")} · {r.Detail}"));
             if (_serviceCts.IsCancellationRequested) OptServicesResult.Text += "\nOperação interrompida entre itens. Mudanças concluídas continuam com backup.";
+            OptimizationLog.Write("SERVIÇOS", _serviceCts.IsCancellationRequested ? "CANCELADO" : result.Results.Any(r => !r.Success) ? "FINALIZADO COM PENDÊNCIAS" : "CONCLUÍDO", "Operação", OptServicesResult.Text);
         }
-        catch (Exception ex) { OptServicesResult.Text = "Não foi possível concluir: " + ex.Message + "\nBackup preservado em " + ServiceJournalPath; }
+        catch (Exception ex) { OptServicesResult.Text = "Não foi possível concluir: " + ex.Message + "\nBackup preservado em " + ServiceJournalPath; OptimizationLog.Write("SERVIÇOS", "FALHA", "Operação", OptServicesResult.Text); }
         finally
         {
             _serviceBusy = false; _optimizationBusy = false;
@@ -104,7 +107,7 @@ public partial class MainWindow
     {
         if (!CanManageServices()) return;
         var selected = _serviceRows.Where(r => r.Selected && r.Available).ToList();
-        if (selected.Count == 0) { OptServicesResult.Text = "Escolha os serviços após analisar este PC."; return; }
+        if (selected.Count == 0) { ShowOptimizationBlock("Marque as caixas dos serviços desejados após analisar este PC. Clicar na linha apenas mostra os detalhes."); return; }
         if (!ReviewExtremeSelection("PERFIL DE SERVIÇOS\nDesabilitar e parar os itens selecionados:\n\n" +
             string.Join("\n\n", selected.Select(r => r.Title + "\n" + r.Impact)) +
             "\n\nSegurança e serviços essenciais ficam fora da seleção. Não há encerramento forçado nem parada de dependentes. Os originais ficam em backup separado.")) return;

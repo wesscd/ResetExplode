@@ -54,6 +54,14 @@
 - Aparece no monitor onde o jogo está, não só no monitor principal.
 # BaraoTechExplode · fork da Barão Tech
 
+## v0.19 · Otimização guiada e console persistente
+
+- Página reorganizada com instruções por etapas, análise em primeiro plano e ferramentas anteriores recolhidas em áreas avançadas.
+- Console fixo com horário, item, início, backup, aplicação, falha, bloqueio, cancelamento e restauração, incluindo estados quando disponíveis.
+- Mensagens de bloqueio junto à operação, com motivos específicos para jogo, medição, outra operação e sessão pendente.
+- Filtro, cópia e exportação do console, além de logs diários locais que permanecem após fechar o aplicativo.
+- Diagnóstico de falha na gravação do log sem esconder o resultado ou interferir nos backups e na recuperação.
+
 ## v0.18 · Comparação de sessões e recuperação visível
 
 - Aviso global ao abrir o aplicativo com ajustes temporários pendentes, funções afetadas, estados originais e botão de restauração.

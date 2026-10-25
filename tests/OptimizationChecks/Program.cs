@@ -199,6 +199,7 @@ try
     LiveAuditChecks.Run(Check);
     TemporarySessionChecks.Run(folder, Check, Throws);
     PerformanceChecks.Run(folder, Check, Throws);
+    ConsoleChecks.Run(folder, Check);
     Console.WriteLine($"{checks} verificações aprovadas.");
 }
 finally
