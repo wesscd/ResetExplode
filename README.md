@@ -34,13 +34,29 @@ As últimas 100 sessões são persistidas em `game-performance.json` com gravaç
 
 Um aviso no topo de todas as páginas identifica diários pendentes de energia, captura e serviços temporários, com os estados originais disponíveis e botão de restauração. Arquivos corrompidos ou órfãos também são sinalizados e preservados. A abertura apenas consulta os registros; a restauração ocorre ao clicar no botão e fica bloqueada durante testes e medições. O aviso não aparece para uma sessão de jogo que está sendo acompanhada normalmente.
 
-### Otimização guiada e console (v0.19)
+### Lista de otimizações (v0.20)
 
-A página começa com **Comece aqui**, seguida da análise de serviços/aplicativos e dos ajustes permanentes do Windows. O catálogo alternativo de serviços e as ferramentas anteriores ficam recolhidos em áreas avançadas. A seleção de ajustes do Windows fica aberta para revisão. Atalhos levam ao perfil temporário por jogo e à restauração dos serviços.
+![Prévia da lista de otimizações com dados de demonstração](Assets/preview-v0.20.png)
+
+*Prévia visual com dados de demonstração; não representa leituras ou alterações em um PC real.*
+
+A tela principal agora é uma lista agrupada em **Windows, serviços e aplicativos**, inspirada na organização de estado/recomendação da referência visual indicada pelo usuário. O código, os ícones e a identidade do BaraoTechExplode são próprios deste fork; não usa componentes ou ajustes do O&O ShutUp.
+
+As colunas mostram **fila**, **item detectado**, **estado lido**, **ao aplicar** e **avaliação**. A caixa de fila é uma seleção pendente; não representa o estado do recurso e não executa nenhuma ação. Enquanto desmarcado, o resultado previsto é manter o estado atual. Os estados são expressos pelo recurso real: por exemplo, “Captura ativada ou parcial” com a ação “Desativar captura”, evitando confundir o booleano interno do ajuste com o estado do Windows.
+
+O painel lateral explica ação disponível, impacto funcional, motivo de bloqueio/preservação, benefício esperado, existência de backup e resultado associado àquela lista na sessão. Os indicadores distinguem sugestões, itens condicionais, segurança, itens já no alvo e itens sem regra validada. Esses indicadores não prometem ganho em FPS. Estado desconhecido ou incompatibilidade mantém a opção visível e preservada.
+
+A análise inicial é automática ao abrir a página e pode ser atualizada pelo botão. Busca e filtros mostram Windows, serviços, aplicativos, disponíveis, preservados ou itens na fila. **Marcar sugestões** apenas seleciona candidatos disponíveis do conjunto conservador (Modo de Jogo, otimizações em janela quando o estado é conhecido e serviços já sugeridos no catálogo). Não inclui automaticamente captura, HAGS, energia ou todos os serviços condicionais. A fila pode conter itens fora do filtro atual e é mostrada por inteiro na revisão antes de aplicar.
+
+**Revisar alterações** usa os mesmos backends validados e backups para ajustes Windows e serviços, e fechamento normal para aplicativos. Após o lote, a lista é relida; falhas e resultados são registrados no console. A aplicação Windows passa pelo mesmo pipeline do perfil existente e entra em seu histórico. **Restaurar item** usa o original salvo do item realçado pela linha, disponível apenas para Windows e serviços com backup. O console é recolhível para liberar espaço; ferramentas e catálogos anteriores permanecem na aba avançada. Ao retornar dessa aba, a leitura é atualizada e seleções ainda válidas são preservadas.
+
+### Console persistente (introduzido na v0.19)
+
+Na v0.19 foi introduzido o fluxo guiado. A v0.20 substitui a apresentação por cartões pela lista descrita acima, mantendo as ferramentas anteriores em uma aba avançada.
 
 O fluxo é: **analisar → marcar caixas → conferir impactos → revisar e confirmar → conferir console**. Clicar numa linha mostra detalhes; marcar a caixa seleciona a ação. Um inventário sem candidatos e uma seleção vazia são explicados. Botões de aplicação indisponíveis mostram o motivo ao passar o mouse. Bloqueios por jogo, medição, outra operação ou sessão pendente aparecem na área da operação e no console.
 
-O **console de otimização**, fixo no rodapé da página, é somente leitura. Exibe horário, área, etapa/resultado, item, motivo e estados anterior/posterior quando disponíveis. Registra backups antes de mudanças, confirmações lidas do Windows, itens já configurados, bloqueios, falhas, reversões e restaurações, além do perfil temporário por jogo. Preferências de GPU configuradas não são apresentadas como prova de que o jogo usou aquela GPU.
+O **console de otimização**, no rodapé da página e recolhível na v0.20, é somente leitura. Exibe horário, área, etapa/resultado, item, motivo e estados anterior/posterior quando disponíveis. Registra backups antes de mudanças, confirmações lidas do Windows, itens já configurados, bloqueios, falhas, reversões e restaurações, além do perfil temporário por jogo. Preferências de GPU configuradas não são apresentadas como prova de que o jogo usou aquela GPU.
 
 Os registros ficam em `%AppData%\ResetExplode\logs\optimization-AAAA-MM-DD.jsonl`, sem envio automático. A tela exibe até 500 registros recentes de até sete arquivos diários; os arquivos anteriores não são apagados. É possível filtrar, copiar, exportar a visualização em TXT ou abrir a pasta. Os registros podem conter caminhos locais e nomes de programas. Logs antigos não são reconstruídos: alterações de versões anteriores continuam nos backups/históricos disponíveis, mas não ganham um registro retroativo completo.
 

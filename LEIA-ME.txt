@@ -1,5 +1,13 @@
 BaraoTechExplode
 
+v0.20: nova LISTA DE OTIMIZACOES, organizada por Windows, servicos e aplicativos.
+Cada linha mostra o estado lido e o que acontecera ao aplicar.
+Marcar uma caixa apenas coloca o item na fila. Use REVISAR ALTERACOES para
+conferir todos os impactos antes de confirmar. O painel lateral mostra o motivo
+de preservacao e o backup. RESTAURAR ITEM usa o original do item realcado.
+O console fica recolhido no rodape; clique para abrir os registros.
+As ferramentas anteriores continuam na aba FERRAMENTAS AVANCADAS.
+
 v0.19: pagina OTIMIZACAO GUIADA com etapas e console fixo no rodape.
 Analise, marque caixas, revise e confirme. Clicar na linha so mostra detalhes.
 O console mostra o resultado de cada etapa e fica salvo em

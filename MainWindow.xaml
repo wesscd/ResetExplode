@@ -2112,10 +2112,65 @@
                 </Grid>
 
                 <!-- ===== RESET OTIMIZA ===== -->
-                <Grid x:Name="PageOptimize" Visibility="Collapsed"><Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="280"/></Grid.RowDefinitions><ScrollViewer x:Name="OptContentScroll" Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                <Grid x:Name="PageOptimize" Visibility="Collapsed" Margin="18,12">
+                    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <TabControl x:Name="OptWorkbenchTabs" Background="Transparent" BorderThickness="0" SelectionChanged="OptWorkbenchTabs_Changed">
+                        <TabControl.Template><ControlTemplate TargetType="TabControl"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions><TabPanel IsItemsHost="True"/><ContentPresenter x:Name="PART_SelectedContentHost" Grid.Row="1" ContentSource="SelectedContent" Margin="0,10,0,0"/></Grid></ControlTemplate></TabControl.Template>
+                        <TabItem Header="LISTA DE OTIMIZAÇÕES" Style="{StaticResource WorkbenchTab}">
+                            <Grid>
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="O QUE FOI DETECTADO NESTE PC" FontSize="18" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Marque o que deseja alterar. O estado lido e o resultado previsto aparecem em colunas separadas." FontSize="11" Foreground="{DynamicResource Muted}" Margin="0,4,0,10"/>
+                                    <WrapPanel>
+                                        <Button x:Name="BtnLiveScan" Content="ATUALIZAR ANÁLISE" Style="{StaticResource OutlineButton}" Padding="12,8" Margin="0,0,8,8" Click="BtnLiveScan_Click"/>
+                                        <Button x:Name="BtnLiveApply" Content="REVISAR ALTERAÇÕES" ToolTipService.ShowOnDisabled="True" IsEnabled="False" Style="{StaticResource PrimaryButton}" Padding="12,8" Margin="0,0,8,8" Click="BtnLiveApply_Click"/>
+                                        <Button x:Name="BtnWorkbenchRestore" Content="RESTAURAR ITEM" IsEnabled="False" Style="{StaticResource OutlineButton}" Padding="12,8" Margin="0,0,8,8" Click="BtnWorkbenchRestore_Click"/>
+                                        <Button x:Name="BtnLiveCancel" Content="CANCELAR" IsEnabled="False" Style="{StaticResource OutlineButton}" Padding="12,8" Margin="0,0,8,8" Click="BtnLiveCancel_Click"/>
+                                        <Button Content="EXPORTAR" Style="{StaticResource OutlineButton}" Padding="12,8" Margin="0,0,0,8" Click="BtnLiveExport_Click"/>
+                                    </WrapPanel>
+                                    <Grid Margin="0,0,0,8"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="180"/></Grid.ColumnDefinitions>
+                                        <TextBox x:Name="OptLiveFilter" Tag="Buscar item, estado ou motivo…" Margin="0,0,10,0" TextChanged="OptLiveFilter_Changed"/>
+                                        <ComboBox x:Name="OptWorkbenchScope" Grid.Column="1" Style="{StaticResource OptimizationGpuPicker}" SelectedValuePath="Content" SelectedIndex="0" SelectionChanged="OptWorkbenchScope_Changed"><ComboBoxItem Content="Todos"/><ComboBoxItem Content="Windows"/><ComboBoxItem Content="Serviços"/><ComboBoxItem Content="Aplicativos"/><ComboBoxItem Content="Disponíveis"/><ComboBoxItem Content="Preservados"/><ComboBoxItem Content="Selecionados"/></ComboBox>
+                                    </Grid>
+                                    <DockPanel Margin="0,0,0,8"><WrapPanel DockPanel.Dock="Right"><Button x:Name="BtnWorkbenchSuggestions" Content="MARCAR SUGESTÕES" Style="{StaticResource OutlineButton}" FontSize="10" Padding="8,4" Margin="8,0,0,0" Click="BtnWorkbenchSuggestions_Click"/><Button x:Name="BtnWorkbenchClear" Content="DESMARCAR" Style="{StaticResource OutlineButton}" FontSize="10" Padding="8,4" Margin="8,0,0,0" Click="BtnWorkbenchClear_Click"/></WrapPanel><TextBlock x:Name="OptLiveStatus" Text="Carregando análise somente leitura…" FontSize="11" Foreground="{DynamicResource Muted}" TextWrapping="Wrap" MaxHeight="48"/></DockPanel>
+                                </StackPanel>
+                                <Grid Grid.Row="1" x:Name="OptLiveSection">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="260"/></Grid.ColumnDefinitions>
+                                    <Border BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="6">
+                                        <DataGrid x:Name="OptLiveList" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" SelectionChanged="OptWorkbenchRow_Changed" MinRowHeight="44" HeadersVisibility="Column" VirtualizingPanel.IsVirtualizingWhenGrouping="True" Foreground="{DynamicResource Fg}">
+                                            <DataGrid.GroupStyle><GroupStyle><GroupStyle.HeaderTemplate><DataTemplate><Border Background="{DynamicResource Panel}" BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,1" Padding="10,6"><StackPanel Orientation="Horizontal"><TextBlock Text="{Binding Name}" FontWeight="SemiBold" Foreground="{DynamicResource Fg}"/><TextBlock Text="{Binding ItemCount, StringFormat=' · {0} itens'}" Foreground="{DynamicResource Muted}"/></StackPanel></Border></DataTemplate></GroupStyle.HeaderTemplate></GroupStyle></DataGrid.GroupStyle>
+                                            <DataGrid.Columns>
+                                                <DataGridTemplateColumn Header="FILA" Width="44"><DataGridTemplateColumn.CellTemplate><DataTemplate><CheckBox Style="{StaticResource WorkbenchSelection}" HorizontalAlignment="Center" IsChecked="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Available}" ToolTip="{Binding BlockReason}"/></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="ITEM DETECTADO" Width="2*" MinWidth="140"><DataGridTemplateColumn.CellTemplate><DataTemplate><StackPanel Margin="0,5"><TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Title}" FontSize="12"/><TextBlock Text="{Binding Recognition}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Recognition}" FontSize="10" Foreground="{DynamicResource Muted}"/></StackPanel></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="ESTADO LIDO" Width="1.1*" MinWidth="90"><DataGridTemplateColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding DisplayState}" TextWrapping="Wrap" FontSize="11" ToolTip="{Binding State}"/></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="AO APLICAR" Width="1.4*" MinWidth="105"><DataGridTemplateColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding AfterState}" TextWrapping="Wrap" FontSize="11"/></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="AVALIAÇÃO" Width="112"><DataGridTemplateColumn.CellTemplate><DataTemplate><Border Style="{StaticResource WorkbenchBadge}" Margin="0,4" ToolTip="{Binding BlockReason}"><TextBlock Text="{Binding ReviewLabel}" TextWrapping="Wrap" FontSize="9"/></Border></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </Border>
+                                    <Border Grid.Column="2" Background="{DynamicResource Card}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="6" Padding="12">
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel DataContext="{Binding SelectedItem, ElementName=OptLiveList}">
+                                            <TextBlock Text="DETALHES DO ITEM" FontSize="10" Foreground="{DynamicResource Muted}"/>
+                                            <TextBlock Text="{Binding Title, TargetNullValue='Selecione uma linha'}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,8,0,12"/>
+                                            <TextBlock Text="ESTADO RECONHECIDO" FontSize="10" Foreground="{DynamicResource Muted}"/><TextBlock Text="{Binding State}" TextWrapping="Wrap" Margin="0,4,0,12"/>
+                                            <TextBlock Text="AÇÃO DISPONÍVEL" FontSize="10" Foreground="{DynamicResource Muted}"/><TextBlock Text="{Binding Action}" TextWrapping="Wrap" Margin="0,4,0,12"/>
+                                            <TextBlock Text="IMPACTO / FUNÇÃO AFETADA" FontSize="10" Foreground="{DynamicResource Muted}"/><TextBlock Text="{Binding Impact}" TextWrapping="Wrap" Margin="0,4,0,12"/>
+                                            <TextBlock Text="VALIDAÇÃO" FontSize="10" Foreground="{DynamicResource Muted}"/><TextBlock Text="{Binding BlockReason}" TextWrapping="Wrap" Margin="0,4,0,12"/>
+                                            <TextBlock Text="BENEFÍCIO ESPERADO" FontSize="10" Foreground="{DynamicResource Muted}"/><TextBlock Text="{Binding Benefit}" TextWrapping="Wrap" Margin="0,4,0,12"/>
+                                            <TextBlock Text="{Binding RestoreInfo}" Foreground="{DynamicResource Muted}" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                                            <TextBlock Text="ÚLTIMO RESULTADO" FontSize="10" Foreground="{DynamicResource Muted}"/><TextBlock Text="{Binding LastResult}" TextWrapping="Wrap" Margin="0,4,0,12"/>
+                                            <Expander Header="Evidência e identificação" Foreground="{DynamicResource Fg}"><StackPanel><TextBlock Text="{Binding Evidence}" TextWrapping="Wrap" Margin="0,8,0,8"/><TextBlock Text="{Binding Resources}" TextWrapping="Wrap"/><TextBlock Text="{Binding Path}" TextWrapping="Wrap" Margin="0,8,0,0"/><TextBlock Text="Fabricante declarado (não verificado):" FontSize="10" Foreground="{DynamicResource Muted}" Margin="0,8,0,0"/><TextBlock Text="{Binding Company}" TextWrapping="Wrap" Margin="0,4,0,0"/></StackPanel></Expander>
+                                        </StackPanel></ScrollViewer>
+                                    </Border>
+                                </Grid>
+                                <StackPanel Grid.Row="2" Margin="0,8,0,8"><TextBlock x:Name="OptWorkbenchQueue" Text="Fila vazia · marcar uma caixa não altera o Windows." FontWeight="SemiBold" TextWrapping="Wrap" FontSize="11"/><TextBlock x:Name="OptWorkflowStatus" Text="Aguarde a análise ou clique em ATUALIZAR ANÁLISE." Foreground="{DynamicResource Muted}" TextWrapping="Wrap" FontSize="10" Margin="0,4,0,0"/><Expander Header="Ver prévia completa da fila" Foreground="{DynamicResource Fg}" Margin="0,6,0,0"><ScrollViewer MaxHeight="120" VerticalScrollBarVisibility="Auto"><TextBlock x:Name="OptLivePreview" Text="Nada selecionado." TextWrapping="Wrap" FontSize="11"/></ScrollViewer></Expander></StackPanel>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="FERRAMENTAS AVANÇADAS" Style="{StaticResource WorkbenchTab}"><ScrollViewer x:Name="OptContentScroll" Grid.Row="0" VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="36,30,36,30">
                         <StackPanel Margin="0,0,0,20">
-                            <TextBlock Text="OTIMIZAÇÃO GUIADA" Style="{StaticResource H1}"/>
+                            <TextBlock Text="FERRAMENTAS AVANÇADAS" Style="{StaticResource H1}"/>
                             <TextBlock Text="Diagnóstico, ajustes reversíveis e perfis para jogar" Style="{StaticResource Sub}"/>
                         </StackPanel>
 
@@ -2127,51 +2182,8 @@
 
 
 
-                        <Border Style="{StaticResource CardBorder}" Margin="0,0,0,14">
-                            <StackPanel>
-                                <TextBlock Text="COMECE AQUI" FontSize="18" FontWeight="SemiBold"/>
-                                <TextBlock Text="1. Analise este PC.  2. Marque os itens disponíveis e confira os impactos.  3. Revise e confirme para aplicar.  4. Confira o resultado no console abaixo." TextWrapping="Wrap" Margin="0,8,0,8"/>
-                                <TextBlock Text="Analisar não muda o Windows. Serviços e ajustes do Windows permanecem até restaurar. O perfil da Biblioteca é temporário e vale durante o acompanhamento do jogo." TextWrapping="Wrap" Foreground="{DynamicResource Muted}"/>
-                                <WrapPanel Margin="0,12,0,0">
-                                    <Button Content="ANALISAR ESTE PC" Style="{StaticResource PrimaryButton}" Click="BtnLiveScan_Click" Margin="0,0,8,8"/>
-                                    <Button Content="AJUSTES DO WINDOWS" Tag="OptWindowsSection" Style="{StaticResource OutlineButton}" Click="BtnOptimizationSection_Click" Margin="0,0,8,8"/>
-                                    <Button Content="PERFIL TEMPORÁRIO POR JOGO" Tag="game" Style="{StaticResource OutlineButton}" Click="BtnOptimizationSection_Click" Margin="0,0,8,8"/>
-                                    <Button Content="RESTAURAR SERVIÇOS" Tag="OptServiceRestoreSection" Style="{StaticResource OutlineButton}" Click="BtnOptimizationSection_Click" Margin="0,0,0,8"/>
-                                </WrapPanel>
-                                <TextBlock x:Name="OptWorkflowStatus" Text="1. Analise este PC para obter uma seleção atual." FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,6,0,0"/>
-                            </StackPanel>
-                        </Border>
-                        <Border x:Name="OptLiveSection" Style="{StaticResource CardBorder}" Margin="0,0,0,14">
-                            <StackPanel>
-                                <TextBlock Text="1 · ANALISAR, SELECIONAR E APLICAR" FontSize="19" FontWeight="SemiBold"/>
-                                <TextBlock Text="Inventário local com consumo observado, ação proposta e impacto funcional. Segurança e itens não validados são preservados. Nada começa selecionado; consumo atual não comprova ganho em FPS." TextWrapping="Wrap" Foreground="{DynamicResource Muted}" Margin="0,8,0,10"/>
-                                <WrapPanel>
-                                    <Button x:Name="BtnLiveScan" Content="ANALISAR ESTE PC" Style="{StaticResource PrimaryButton}" Margin="0,0,8,8" Click="BtnLiveScan_Click"/>
-                                    <Button x:Name="BtnLiveApply" ToolTipService.ShowOnDisabled="True" Content="REVISAR E APLICAR PRÉVIA" IsEnabled="False" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnLiveApply_Click"/>
-                                    <Button Content="EXPORTAR RELATÓRIO" Style="{StaticResource OutlineButton}" Margin="0,0,8,8" Click="BtnLiveExport_Click"/>
-                                    <Button x:Name="BtnLiveCancel" Content="CANCELAR APÓS ITEM ATUAL" IsEnabled="False" Style="{StaticResource OutlineButton}" Margin="0,0,0,8" Click="BtnLiveCancel_Click"/>
-                                </WrapPanel>
-                                <TextBlock x:Name="OptLiveStatus" Text="Clique em analisar para consultar os serviços instalados e os processos em execução na sua sessão." TextWrapping="Wrap" Foreground="{DynamicResource Muted}" Margin="0,4,0,10"/>
-                                <TextBlock Text="FILTRAR POR NOME, FABRICANTE OU CLASSIFICAÇÃO" FontSize="10" Foreground="{DynamicResource Muted}"/>
-                                <TextBox x:Name="OptLiveFilter" Margin="0,4,0,8" TextChanged="OptLiveFilter_Changed"/>
-                                <DataGrid x:Name="OptLiveList" Height="300" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" SelectionMode="Single" Foreground="{DynamicResource Fg}">
-                                    <DataGrid.Columns>
-                                        <DataGridTemplateColumn Header="✓" Width="38">
-                                            <DataGridTemplateColumn.CellTemplate><DataTemplate><CheckBox HorizontalAlignment="Center" IsChecked="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Available}"/></DataTemplate></DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTextColumn Header="TIPO" Binding="{Binding Kind}" Width="80"/>
-                                        <DataGridTextColumn Header="SERVIÇO / PROGRAMA" Binding="{Binding Title}" Width="240"/>
-                                        <DataGridTextColumn Header="CLASSIFICAÇÃO" Binding="{Binding Classification}" Width="200"/>
-                                        <DataGridTextColumn Header="CPU · RAM · E/S DO PROCESSO" Binding="{Binding Resources}" Width="300"/>
-                                        <DataGridTextColumn Header="FABRICANTE DECLARADO" Binding="{Binding Company}" Width="180"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                                <TextBlock Text="MARQUE A CAIXA PARA SELECIONAR · CLIQUE NA LINHA PARA VER O IMPACTO" FontSize="10" Foreground="{DynamicResource Muted}" Margin="0,8,0,4"/>
-                                <ScrollViewer MaxHeight="180" VerticalScrollBarVisibility="Auto"><TextBlock Text="{Binding SelectedItem.Details, ElementName=OptLiveList}" TextWrapping="Wrap" Foreground="{DynamicResource Fg}"/></ScrollViewer>
-                                <Expander Header="PRÉVIA DAS AÇÕES SELECIONADAS" IsExpanded="True" Foreground="{DynamicResource Fg}" Margin="0,12,0,18">
-                                    <ScrollViewer MaxHeight="240" VerticalScrollBarVisibility="Auto"><TextBlock x:Name="OptLivePreview" Text="Selecione itens disponíveis para montar a prévia. Nada foi alterado." TextWrapping="Wrap" Margin="0,10,0,0"/></ScrollViewer>
-                                </Expander>
-<Expander x:Name="OptServiceRestoreSection" Header="AVANÇADO · CATÁLOGO E RESTAURAÇÃO DE SERVIÇOS" Foreground="{DynamicResource Fg}" Margin="0,10,0,0"><StackPanel Margin="0,10,0,0">                                <TextBlock Text="CATÁLOGO VALIDADO · RESTAURAÇÃO DE SERVIÇOS" FontSize="15" FontWeight="SemiBold"/>
+
+<Border Style="{StaticResource CardBorder}"><Expander x:Name="OptServiceRestoreSection" Header="AVANÇADO · CATÁLOGO E RESTAURAÇÃO DE SERVIÇOS" Foreground="{DynamicResource Fg}" Margin="0,10,0,0"><StackPanel Margin="0,10,0,0">                                <TextBlock Text="CATÁLOGO VALIDADO · RESTAURAÇÃO DE SERVIÇOS" FontSize="15" FontWeight="SemiBold"/>
                                 <Expander Header="HISTÓRICO DE SERVIÇOS TEMPORÁRIOS POR JOGO" Foreground="{DynamicResource Fg}" Margin="0,10,0,12">
                                     <StackPanel>
                                         <TextBlock x:Name="OptTemporaryHistoryStatus" Text="Consulte as sessões do perfil por jogo na Biblioteca." TextWrapping="Wrap" Foreground="{DynamicResource Muted}" Margin="0,10,0,8"/>
@@ -2211,8 +2223,7 @@
                                     </ScrollViewer>
                                 </Expander>
                                 <TextBlock x:Name="OptServicesResult" TextWrapping="Wrap" Margin="0,10,0,0"/>
-</StackPanel></Expander>                            </StackPanel>
-                        </Border>
+</StackPanel></Expander></Border>
                         <Border x:Name="OptWindowsSection" Style="{StaticResource CardBorder}" Margin="0,0,0,14">
                             <StackPanel>
                                 <TextBlock Text="2 · AJUSTES DO WINDOWS · PERMANENTES" FontSize="19" FontWeight="SemiBold"/>
@@ -2427,8 +2438,9 @@
                             </Border>
                         </Grid></StackPanel></Expander>
                     </StackPanel>
-                </ScrollViewer>
-                    <Border Grid.Row="1" BorderBrush="{DynamicResource LineStrong}" BorderThickness="0,1,0,0" Background="{DynamicResource Card}" Padding="18,12">
+                </ScrollViewer></TabItem>
+                    </TabControl>
+                    <Expander Grid.Row="1" Header="CONSOLE DE EXECUÇÃO · ABRIR REGISTROS" Foreground="{DynamicResource Fg}" IsExpanded="False" Margin="0,4,0,0"><Grid Height="220">                    <Border  BorderBrush="{DynamicResource LineStrong}" BorderThickness="0,1,0,0" Background="{DynamicResource Card}" Padding="18,12">
                         <Grid>
                             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                             <DockPanel>
@@ -2439,7 +2451,7 @@
                                 </WrapPanel>
                                 <TextBlock Text="CONSOLE DE OTIMIZAÇÃO · SOMENTE LEITURA" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </DockPanel>
-                            <Grid Grid.Row="1" Margin="0,8,0,6"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="200"/></Grid.ColumnDefinitions>
+                            <Grid  Margin="0,8,0,6"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="200"/></Grid.ColumnDefinitions>
                                 <TextBlock x:Name="OptConsoleLatest" Text="Aguardando operação. Os resultados aparecem aqui e ficam salvos em arquivo." TextWrapping="Wrap" FontSize="11" MaxHeight="36" Foreground="{DynamicResource Muted}" Margin="0,0,12,0"/>
                                 <DockPanel Grid.Column="1"><TextBlock Text="FILTRAR" VerticalAlignment="Center" FontSize="10" Margin="0,0,8,0"/><TextBox x:Name="OptConsoleFilter" TextChanged="OptConsoleFilter_Changed" Padding="6,3"/></DockPanel>
                             </Grid>
@@ -2448,8 +2460,9 @@
                             </TextBox>
                             <DockPanel Grid.Row="3" Margin="0,6,0,0"><CheckBox x:Name="OptConsoleFollow" DockPanel.Dock="Right" Content="Acompanhar" IsChecked="True" FontSize="10"/><TextBlock x:Name="OptConsoleStorage" Text="Histórico local persistente." FontSize="10" Foreground="{DynamicResource Muted}" TextTrimming="CharacterEllipsis"/></DockPanel>
                         </Grid>
-                    </Border>
+                    </Border></Grid></Expander>
                 </Grid>
+
                 <!-- ===== INICIALIZAÇÃO (programas que abrem com o Windows) ===== -->
                 <ScrollViewer x:Name="PageStartup" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="36,30,36,30">

@@ -29,13 +29,26 @@ public sealed class LiveOptimizationItem : INotifyPropertyChanged
     public long? WorkingSet { get; init; }
     public double? IoBytesPerSecond { get; init; }
     public bool SharedHost { get; init; }
-    public string Resources => $"CPU {(CpuPercent is double cpu ? $"{cpu:0.00}%" : "—")} · RAM {(WorkingSet is long ram ? $"{ram / 1048576.0:0} MB" : "—")} · E/S {(IoBytesPerSecond is double io ? $"{io / 1048576.0:0.00} MB/s" : "—")}";
+    public string StateLabel { get; init; } = "";
+    public string Recognition { get; init; } = "";
+    public string BlockReason { get; init; } = "";
+    public bool AtTarget { get; init; }
+    public bool Suggested { get; init; }
+    public bool Experimental { get; init; }
+    public bool HasBackup { get; set; }
+    public string DisplayState => string.IsNullOrEmpty(StateLabel) ? State : StateLabel;
+    public string ReviewLabel => AtTarget ? "JÁ NO ALVO" : Classification.Contains("SEGURANÇA") ? "SEGURANÇA" : Available ? Experimental ? "EXPERIMENTAL" : Suggested ? "SUGESTÃO" : "CONDICIONAL" : Classification.Contains("NÃO VALIDADO") ? "SEM REGRA" : "PRESERVAR";
+    public string AfterState => Selected ? Action : "Manter estado atual";
+    public string RestoreInfo => HasBackup ? "Original guardado pelo aplicativo. Use RESTAURAR ITEM para recuperar." : "Nenhum original disponível para restaurar este item.";
+    private string _lastResult = "";
+    public string LastResult { get => _lastResult; set { _lastResult = value; PropertyChanged?.Invoke(this, new(nameof(LastResult))); } }
+    public string Resources => Kind == "Windows" ? "Configuração do sistema; sem consumo isolado atribuível." : $"CPU {(CpuPercent is double cpu ? $"{cpu:0.00}%" : "—")} · RAM {(WorkingSet is long ram ? $"{ram / 1048576.0:0} MB" : "—")} · E/S {(IoBytesPerSecond is double io ? $"{io / 1048576.0:0.00} MB/s" : "—")}";
     public string Details => $"Estado atual: {State}\nAção proposta: {Action}\nImpacto: {Impact}\nBenefício esperado: {Benefit}\nEvidência: {Evidence}\nExecutável: {Path}\nFabricante declarado: {Company} (metadados; assinatura não verificada)";
     private bool _selected;
     public bool Selected
     {
         get => _selected;
-        set { bool next = Available && value; if (_selected == next) return; _selected = next; PropertyChanged?.Invoke(this, new(nameof(Selected))); }
+        set { bool next = Available && value; if (_selected == next) return; _selected = next; PropertyChanged?.Invoke(this, new(nameof(Selected))); PropertyChanged?.Invoke(this, new(nameof(AfterState))); }
     }
     public event PropertyChangedEventHandler? PropertyChanged;
 }
@@ -93,6 +106,10 @@ public static class LiveOptimizationAudit
                 State = $"{startup} · {s.State} · PID {service.Pid}",
                 Classification = protectedIdentity ? "PRESERVAR SEGURANÇA" : GamingServiceCatalog.Classification(s.Name),
                 Available = block == null,
+                StateLabel = (s.State == "Running" ? "Em execução" : s.State == "Stopped" ? "Parado" : s.State) + " · " + startup,
+                Recognition = rule == null ? "Instalado · sem regra validada" : "Instalado · catálogo validado",
+                BlockReason = block ?? "Pode ser selecionado. Confira a função que será interrompida.",
+                AtTarget = rule != null && !protectedIdentity && s.Start == 4 && s.State == "Stopped", Suggested = rule?.Suggested == true,
                 Action = block == null ? "Desabilitar inicialização e parar o serviço" : "Preservar",
                 Impact = rule?.Impact ?? GamingServiceCatalog.Reason(s.Name),
                 Benefit = block != null ? "Nenhuma alteração proposta: " + block : s.State != "Running"
@@ -126,6 +143,8 @@ public static class LiveOptimizationAudit
                 Benefit = block == null ? Benefit(p) : block,
                 Evidence = "Amostra do processo. RAM é working set, pode incluir páginas compartilhadas e não é memória garantida para liberação. E/S não equivale somente a disco.",
                 Available = block == null, Pid = p.Pid, StartedUtcTicks = p.StartedUtcTicks,
+                StateLabel = "Em execução", Recognition = known ? "Processo conhecido · sessão atual" : "Processo detectado · sem regra validada",
+                BlockReason = block ?? "Pode solicitar fechamento normal. Salve seu trabalho antes.",
                 CpuPercent = p.CpuPercent, WorkingSet = p.WorkingSet, IoBytesPerSecond = p.IoBytesPerSecond,
                 SharedHost = hosts.ContainsKey(p.Pid)
             });
@@ -145,7 +164,7 @@ public static class LiveOptimizationAudit
         var selected = items.Where(i => i.Selected && i.Available).ToList();
         if (selected.Count == 0) return "Selecione itens disponíveis para montar a prévia. Nada foi alterado.";
         int shared = selected.Count(i => i.SharedHost);
-        return $"{selected.Count} ações: {selected.Count(i => i.Kind == "Serviço")} serviços e {selected.Count(i => i.Kind == "Aplicativo")} aplicativos.\n" +
+        return $"{selected.Count} ações: {selected.Count(i => i.Kind == "Windows")} ajustes do Windows, {selected.Count(i => i.Kind == "Serviço")} serviços e {selected.Count(i => i.Kind == "Aplicativo")} aplicativos.\n" +
             (shared > 0 ? $"{shared} serviço(s) em hosts compartilhados: não é possível atribuir liberação de recursos individualmente.\n" : "") +
             "Consumo observado não é ganho previsto. FPS e RAM liberada precisam ser medidos após a mudança.\n\n" +
             string.Join("\n\n", selected.Select(i => $"{i.Title}\nAntes: {i.State}\nDepois: {i.Action}\nImpacto: {i.Impact}\nBenefício esperado: {i.Benefit}\n{(i.SharedHost ? "HOST COMPARTILHADO · " : "")}{i.Resources}"));

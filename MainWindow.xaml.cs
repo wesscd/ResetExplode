@@ -862,6 +862,7 @@ public partial class MainWindow : Window
         RefreshOptimizationState();
         UpdateOptimizationDiagnosis();
         InitExtremeOptimization();
+        if (!_workbenchInitialized) { _workbenchInitialized = true; BtnLiveScan_Click(this, new RoutedEventArgs()); }
     }
 
     private void UpdateRamStatus()

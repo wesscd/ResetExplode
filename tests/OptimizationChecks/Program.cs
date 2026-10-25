@@ -200,6 +200,7 @@ try
     TemporarySessionChecks.Run(folder, Check, Throws);
     PerformanceChecks.Run(folder, Check, Throws);
     ConsoleChecks.Run(folder, Check);
+    WorkbenchChecks.Run(Check);
     Console.WriteLine($"{checks} verificações aprovadas.");
 }
 finally

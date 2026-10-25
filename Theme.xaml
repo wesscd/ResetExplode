@@ -102,6 +102,36 @@
         </Setter>
     </Style>
 
+    <Style x:Key="WorkbenchSelection" TargetType="CheckBox">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="CheckBox">
+            <Border x:Name="box" Width="18" Height="18" CornerRadius="3" BorderBrush="{DynamicResource Muted}" BorderThickness="1" Background="Transparent">
+                <TextBlock x:Name="tick" Text="✓" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource Ink}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="True"><Setter TargetName="box" Property="Background" Value="{DynamicResource Fg}"/><Setter TargetName="tick" Property="Visibility" Value="Visible"/></Trigger>
+                <Trigger Property="IsEnabled" Value="False"><Setter TargetName="box" Property="Opacity" Value="0.25"/></Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style x:Key="WorkbenchTab" TargetType="TabItem">
+        <Setter Property="Foreground" Value="{DynamicResource Muted}"/>
+        <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="TabItem">
+            <Border x:Name="tab" BorderBrush="Transparent" BorderThickness="0,0,0,2" Padding="16,10" Margin="0,0,8,0"><ContentPresenter ContentSource="Header"/></Border>
+            <ControlTemplate.Triggers><Trigger Property="IsSelected" Value="True"><Setter Property="Foreground" Value="{DynamicResource Fg}"/><Setter TargetName="tab" Property="BorderBrush" Value="{DynamicResource Fg}"/></Trigger></ControlTemplate.Triggers>
+        </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style x:Key="WorkbenchBadge" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{DynamicResource LineStrong}"/><Setter Property="BorderThickness" Value="1"/><Setter Property="CornerRadius" Value="5"/><Setter Property="Padding" Value="5,3"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ReviewLabel}" Value="SUGESTÃO"><Setter Property="BorderBrush" Value="#58AA81"/></DataTrigger>
+            <DataTrigger Binding="{Binding ReviewLabel}" Value="JÁ NO ALVO"><Setter Property="BorderBrush" Value="#58AA81"/></DataTrigger>
+            <DataTrigger Binding="{Binding ReviewLabel}" Value="CONDICIONAL"><Setter Property="BorderBrush" Value="#C49A46"/></DataTrigger>
+            <DataTrigger Binding="{Binding ReviewLabel}" Value="EXPERIMENTAL"><Setter Property="BorderBrush" Value="#CB895F"/></DataTrigger>
+            <DataTrigger Binding="{Binding ReviewLabel}" Value="SEGURANÇA"><Setter Property="BorderBrush" Value="#6099CA"/></DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <!-- ===== Botões ===== -->
     <Style x:Key="PrimaryButton" TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource Fg}"/>

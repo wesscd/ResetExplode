@@ -54,6 +54,15 @@
 - Aparece no monitor onde o jogo está, não só no monitor principal.
 # BaraoTechExplode · fork da Barão Tech
 
+## v0.20 · Lista de estado e alterações previstas
+
+- Tela principal em lista agrupada por Windows, serviços e aplicativos, com estado lido, resultado previsto e avaliação em cada linha.
+- Seleção de fila separada do estado real: marcar não aplica; a revisão apresenta todas as mudanças antes da confirmação.
+- Painel lateral com impactos, motivos de preservação, backup e último resultado da lista na sessão.
+- Busca e filtros por categoria, disponíveis, preservados e selecionados, além de seleção de sugestões conservadoras.
+- Aplicação unificada pelos backends existentes, releitura após o lote e restauração individual pelo backup.
+- Console recolhível e ferramentas anteriores mantidas em uma aba avançada.
+
 ## v0.19 · Otimização guiada e console persistente
 
 - Página reorganizada com instruções por etapas, análise em primeiro plano e ferramentas anteriores recolhidas em áreas avançadas.
