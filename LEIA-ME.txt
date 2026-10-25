@@ -1,5 +1,15 @@
 BaraoTechExplode
 
+v0.21: resumo da analise e resultado por item.
+Confira reconhecidos, ja no alvo, disponiveis e preservados acima da lista.
+O resultado da ultima tentativa desta sessao aparece em cada linha; selecione
+para ver horario, antes/depois e o motivo. VER CONSOLE abre registros salvos.
+Resultados do ultimo lote incluem aplicativos que ja fecharam. Um pedido de
+fechamento com aplicativo ainda aberto fica PENDENTE, nao confirmado.
+VERIFICADO significa estado lido naquele momento; nao comprova ganho de FPS.
+Se o ajuste pedir reinicio, reinicie manualmente para avaliar o efeito.
+Resultados por linha/lote sao desta sessao; registros anteriores ficam no console.
+
 v0.20: nova LISTA DE OTIMIZACOES, organizada por Windows, servicos e aplicativos.
 Cada linha mostra o estado lido e o que acontecera ao aplicar.
 Marcar uma caixa apenas coloca o item na fila. Use REVISAR ALTERACOES para

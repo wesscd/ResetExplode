@@ -33,6 +33,7 @@ public sealed class LiveOptimizationItem : INotifyPropertyChanged
     public string Recognition { get; init; } = "";
     public string BlockReason { get; init; } = "";
     public bool AtTarget { get; init; }
+    public bool StateRecognized { get; init; } = true;
     public bool Suggested { get; init; }
     public bool Experimental { get; init; }
     public bool HasBackup { get; set; }
@@ -42,6 +43,13 @@ public sealed class LiveOptimizationItem : INotifyPropertyChanged
     public string RestoreInfo => HasBackup ? "Original guardado pelo aplicativo. Use RESTAURAR ITEM para recuperar." : "Nenhum original disponível para restaurar este item.";
     private string _lastResult = "";
     public string LastResult { get => _lastResult; set { _lastResult = value; PropertyChanged?.Invoke(this, new(nameof(LastResult))); } }
+    private WorkbenchResult? _result;
+    public WorkbenchResult? Result
+    {
+        get => _result;
+        set { _result = value; LastResult = value?.Summary ?? "Sem tentativa nesta sessão do aplicativo. Consulte o console para registros anteriores."; PropertyChanged?.Invoke(this, new(nameof(ResultLabel))); }
+    }
+    public string ResultLabel => _result?.Label ?? "Sem tentativa nesta sessão";
     public string Resources => Kind == "Windows" ? "Configuração do sistema; sem consumo isolado atribuível." : $"CPU {(CpuPercent is double cpu ? $"{cpu:0.00}%" : "—")} · RAM {(WorkingSet is long ram ? $"{ram / 1048576.0:0} MB" : "—")} · E/S {(IoBytesPerSecond is double io ? $"{io / 1048576.0:0.00} MB/s" : "—")}";
     public string Details => $"Estado atual: {State}\nAção proposta: {Action}\nImpacto: {Impact}\nBenefício esperado: {Benefit}\nEvidência: {Evidence}\nExecutável: {Path}\nFabricante declarado: {Company} (metadados; assinatura não verificada)";
     private bool _selected;

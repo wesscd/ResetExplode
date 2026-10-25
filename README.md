@@ -34,6 +34,16 @@ As últimas 100 sessões são persistidas em `game-performance.json` com gravaç
 
 Um aviso no topo de todas as páginas identifica diários pendentes de energia, captura e serviços temporários, com os estados originais disponíveis e botão de restauração. Arquivos corrompidos ou órfãos também são sinalizados e preservados. A abertura apenas consulta os registros; a restauração ocorre ao clicar no botão e fica bloqueada durante testes e medições. O aviso não aparece para uma sessão de jogo que está sendo acompanhada normalmente.
 
+### Resumo da análise e resultados por item (v0.21)
+
+![Prévia com dados de demonstração; nenhuma otimização real executada](Assets/preview-v0.21.png)
+
+A lista mostra um resumo da análise completa, independente dos filtros: itens reconhecidos, total avaliado, já no alvo, disponíveis e preservados. Um item reconhecido existe no inventário e tem leitura de estado; isso não autoriza sua alteração. Configurações incompatíveis e estados desconhecidos entram nos preservados. Segurança preservada não conta como otimização concluída.
+
+Cada linha exibe a última tentativa desta sessão do aplicativo. Os detalhes mostram horário, antes/depois e resultado: aplicado e verificado, verificado com reinício necessário, já ajustado, bloqueado, falhou/não confirmado, pendente ou cancelado. A confirmação descreve a leitura de configuração ou a ausência do processo naquele momento; não mede ganho de FPS nem substitui uma nova análise. Aplicativos ainda abertos após o pedido ficam pendentes. Reinicialização não é executada automaticamente.
+
+O resumo e os detalhes do último lote incluem aplicativos que desapareceram da lista após fechar. O botão **Ver console de execução** abre os registros persistentes; resultados por linha e último lote pertencem à sessão atual e não são reconstruídos ao reabrir. O relatório JSON exporta o último lote, inclusive itens ausentes, e informa se a análise ainda é válida. Falha/cancelamento de releitura invalida o resumo e exige atualizar a análise.
+
 ### Lista de otimizações (v0.20)
 
 ![Prévia da lista de otimizações com dados de demonstração](Assets/preview-v0.20.png)

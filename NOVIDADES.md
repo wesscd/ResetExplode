@@ -1,3 +1,14 @@
+## v0.21 · Resumo da análise e confirmação dos resultados
+
+- Resumo global dos itens reconhecidos, avaliados, já no alvo, disponíveis e preservados, independente dos filtros.
+- Último resultado na linha e no painel lateral, com horário e antes/depois da tentativa.
+- Estados explícitos para aplicação verificada, reinício necessário, já ajustado, bloqueio, falha, pendência, restauração e cancelamento.
+- Pedido de fechamento de aplicativo só conta como aplicado após uma nova consulta confirmar a ausência do processo.
+- Resumo e detalhes do último lote mantêm os aplicativos que saíram da lista; exportação JSON inclui esse lote.
+- Atalho para abrir o console e aviso quando uma leitura falha, é cancelada ou expira ao tentar aplicar.
+- Identidade do processo inclui início e caminho: um PID reutilizado não herda seleção ou resultado antigo.
+- Validação com backends simulados e prévia visual com dados de demonstração; nenhum ganho de FPS presumido.
+
 ## Novidades da v0.16
 
 **Nova página · RESET FERRAMENTAS › Inicialização**

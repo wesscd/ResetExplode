@@ -2,6 +2,8 @@ namespace ResetExplode;
 
 public static class OptimizationWorkbench
 {
+    public static string Key(LiveOptimizationItem item) => item.Kind == "Aplicativo"
+        ? $"{item.Kind}:{item.Id}:{item.StartedUtcTicks}:{item.Path}" : item.Kind + ":" + item.Id;
     // "Ativo" descreve o recurso real, não o booleano interno do ajuste de otimização.
     private static readonly Dictionary<string, (string Title, string On, string Off, string Action)> Definitions = new()
     {
@@ -35,6 +37,7 @@ public static class OptimizationWorkbench
                 Recognition = t.IsSupported ? "Configuração do Windows reconhecida" : "Não compatível neste Windows",
                 Available = t.IsSupported && t.CurrentValue == false && settingsWritable,
                 Suggested = t.Id is "gamemode" or "windowed", AtTarget = atTarget, Experimental = t.Id == "hags",
+                StateRecognized = t.IsSupported && t.CurrentValue != null,
                 Action = d.Action + (t.NeedsRestart ? " · reiniciar depois" : ""),
                 Classification = "AJUSTE DO WINDOWS", BlockReason = reason,
                 Impact = t.Description + (t.NeedsRestart ? " Requer reiniciar para avaliar." : ""),

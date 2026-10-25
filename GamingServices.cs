@@ -6,7 +6,10 @@ namespace ResetExplode;
 
 public sealed record GamingServiceRule(string Name, string Title, string Impact, bool Suggested = false, int TargetStart = 4);
 public sealed record GamingServiceSnapshot(string Name, int Start, bool Delayed, string State, bool CanStop, bool IsUserService, List<string> Dependents);
-public sealed record GamingServiceResult(string Name, bool Success, string Detail);
+public sealed record GamingServiceResult(string Name, bool Success, string Detail)
+{
+    public string Status { get; init; } = "APLICADO";
+}
 
 public interface IGamingServiceAccess
 {
@@ -176,7 +179,7 @@ public sealed class GamingServiceProfile
 
     private static string Describe(GamingServiceSnapshot state) => $"início={state.Start} (2 automático, 3 manual, 4 desabilitado), atrasado={state.Delayed}, estado={state.State}";
     private static GamingServiceResult Report(string name, bool success, string detail, string status)
-    { OptimizationLog.Write("SERVIÇOS", status, name, detail); return new(name, success, detail); }
+    { OptimizationLog.Write("SERVIÇOS", status, name, detail); return new(name, success, detail) { Status = status }; }
 
     private void RemoveSaved(GamingServiceSnapshot snapshot)
     {
