@@ -293,7 +293,9 @@ public partial class MainWindow
         if (dialog.ShowDialog(this) != true) return;
         try
         {
-            AtomicFile.Write(dialog.FileName, JsonSerializer.Serialize(new { Inventory = _liveInventory, AnalysisValid = _liveAuditValid, Summary = WorkbenchAnalysisSummary.From(_liveItems), Items = _liveItems,
+            AtomicFile.Write(dialog.FileName, JsonSerializer.Serialize(new { Inventory = _liveInventory,
+                AnalysisValid = _liveAuditValid && DateTimeOffset.Now - _liveInventory.CapturedAt <= TimeSpan.FromMinutes(2),
+                Summary = WorkbenchAnalysisSummary.From(_liveItems), Items = _liveItems,
                 LastBatch = _workbenchBatch.Select(r => new { r.Title, r.Result }),
                 Preview = LiveOptimizationAudit.Preview(_liveItems) }, new JsonSerializerOptions { WriteIndented = true }));
             OptLiveStatus.Text = "Relatório exportado com estados, caminhos locais e prévia: " + dialog.FileName;
