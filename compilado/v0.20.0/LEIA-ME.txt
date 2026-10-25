@@ -1,0 +1,60 @@
+BaraoTechExplode
+
+v0.20: nova LISTA DE OTIMIZACOES, organizada por Windows, servicos e aplicativos.
+Cada linha mostra o estado lido e o que acontecera ao aplicar.
+Marcar uma caixa apenas coloca o item na fila. Use REVISAR ALTERACOES para
+conferir todos os impactos antes de confirmar. O painel lateral mostra o motivo
+de preservacao e o backup. RESTAURAR ITEM usa o original do item realcado.
+O console fica recolhido no rodape; clique para abrir os registros.
+As ferramentas anteriores continuam na aba FERRAMENTAS AVANCADAS.
+
+v0.19: pagina OTIMIZACAO GUIADA com etapas e console fixo no rodape.
+Analise, marque caixas, revise e confirme. Clicar na linha so mostra detalhes.
+O console mostra o resultado de cada etapa e fica salvo em
+%AppData%\ResetExplode\logs. Use COPIAR ou EXPORTAR para diagnosticar falhas.
+Registros anteriores a esta versao nao sao reconstruidos retroativamente.
+
+Fork do RESET EXPLODE de Gustavo da Reset (GustavoReset).
+Codigo principal: https://github.com/GustavoReset/ResetExplode
+Este fork da Barao Tech aproveita sensores e desempenho da base original
+para desenvolver diagnostico e otimizacao para jogos com backup e restauracao.
+Nao e uma versao oficial do projeto original. Licenca MIT e copyright
+(c) 2026 Gustavo (GustavoReset) preservados no arquivo LICENSE.
+Marca e logotipo do fork: Barao Tech, https://baraotech.online/
+
+Servicos temporarios: selecione no perfil do jogo na Biblioteca.
+Ao terminar o acompanhamento, os originais sao restaurados. Apos falha
+ou interrupcao forcada, use RESTAURAR SESSAO PENDENTE em Otimizacao.
+Historico disponivel no painel de servicos. Confira os impactos antes de aplicar.
+
+v0.18: aviso de restauracao pendente no topo de todas as paginas.
+Comparacao por jogo: confira o .exe na Biblioteca, descreva um trecho repetivel,
+selecione Antes ou Depois e clique MEDIR JOGO. Volte ao jogo em 10 segundos;
+a coleta dura 60 segundos. Os rotulos nao alteram ajustes automaticamente.
+Sessoes incompletas ou contextos diferentes nao geram porcentagens de melhora.
+Dados de Present/ETW nao equivalem a quadros exibidos nem comprovam ganho causal.
+=============
+
+Ferramenta de diagnóstico de hardware: informações do sistema, sensores, placa de vídeo,
+FPS estimado em jogos, detector de gargalo, overlay de FPS, RESET BENCH (benchmarks de CPU, GPU, memória e disco)
+RESET OTIMIZA (limpeza de memória e ajustes para jogos) e stress test de CPU / RAM / GPU.
+
+REQUISITOS
+- Windows 10 ou 11, 64 bits. Não precisa instalar o .NET (já vem dentro do .exe).
+- Para temperatura e consumo da CPU, instale o driver PawnIO (uma vez só):
+      winget install namazso.PawnIO
+- Aceite o pedido de administrador ao abrir (necessário para ler os sensores).
+- Se a temperatura/consumo da CPU não aparecerem, o menu lateral mostra o motivo e um
+  botão CORRIGIR, que instala o PawnIO com um clique. Depois feche e abra o programa.
+  Se instalou o PawnIO e mesmo assim não aparecer, reinicie o PC.
+
+COMO USAR
+- Abra o BaraoTechExplode.exe. Na primeira vez ele demora alguns segundos para iniciar.
+- Se o Windows mostrar "O Windows protegeu o computador", clique em "Mais informações"
+  e depois em "Executar assim mesmo" (o programa não tem assinatura digital paga).
+- Overlay: Ctrl + Shift + O liga e desliga.
+
+OBSERVAÇÕES
+- Placas NVIDIA mostram mais detalhes (VBIOS, limites de energia, CUDA).
+- Configurações e histórico ficam em %AppData%\ResetExplode (não vão junto com o .exe).
+- Use os stress tests com o limite de temperatura ligado e boa ventilação.
